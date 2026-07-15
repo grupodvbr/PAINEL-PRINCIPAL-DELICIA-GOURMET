@@ -2,98 +2,470 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Painel OperacionalL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preços • Delícia Gourmet 1</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
     }
-    header {
-      background: #2196F3;
-      color: #fff;
-      text-align: center;
+
+    .container {
+      width: min(1100px, calc(100% - 24px));
+      margin: 24px auto;
+    }
+
+    .topo {
+      background: #ffffff;
+      border-radius: 16px;
       padding: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+      margin-bottom: 16px;
     }
-    #banner {
-      background: #ffeb3b;
-      color: #333;
-      padding: 10px;
-      margin: 20px;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: bold;
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 24px;
     }
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
+
+    .subtitulo {
+      margin: 0;
+      color: #6b7280;
+      font-size: 14px;
     }
-    .card {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      width: 250px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
+
+    .pesquisa-box {
+      margin-top: 18px;
+      position: relative;
     }
-    .card button {
-      display: block;
+
+    #pesquisa {
       width: 100%;
-      margin: 10px 0;
-      padding: 10px;
-      background: #2196F3;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
+      height: 48px;
+      border: 1px solid #dbe2ea;
+      border-radius: 12px;
+      padding: 0 16px;
       font-size: 16px;
+      outline: none;
+      background: #ffffff;
+    }
+
+    #pesquisa:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .tabela-box {
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .tabela-scroll {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 720px;
+    }
+
+    thead {
+      background: #eef4ff;
+    }
+
+    th,
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #edf0f4;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      font-size: 13px;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    td {
+      font-size: 14px;
+    }
+
+    tbody tr:hover {
+      background: #fafcff;
+    }
+
+    .produto {
+      font-weight: 700;
+    }
+
+    .preco-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preco-input {
+      width: 130px;
+      height: 40px;
+      border: 1px solid #cfd8e3;
+      border-radius: 9px;
+      padding: 0 10px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    .preco-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn-salvar {
+      height: 40px;
+      border: 0;
+      border-radius: 9px;
+      padding: 0 14px;
+      background: #2563eb;
+      color: white;
+      font-weight: 700;
       cursor: pointer;
-      text-decoration: none;
     }
-    .card button:hover {
-      background: #1976D2;
+
+    .btn-salvar:hover {
+      background: #1d4ed8;
     }
+
+    .btn-salvar:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status {
+      padding: 18px;
+      text-align: center;
+      color: #64748b;
+    }
+
+    .mensagem {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      padding: 13px 16px;
+      border-radius: 10px;
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      display: none;
+      z-index: 9999;
+    }
+
+    .mensagem.sucesso {
+      background: #16a34a;
+    }
+
+    .mensagem.erro {
+      background: #dc2626;
+    }
+
+    .contador {
+      margin-top: 10px;
+      color: #64748b;
+      font-size: 13px;
+    }
+
     @media (max-width: 600px) {
-      .card {
-        width: 100%;
+      .container {
+        width: min(100% - 12px, 1100px);
+        margin: 10px auto;
+      }
+
+      .topo {
+        padding: 16px;
+        border-radius: 12px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .tabela-box {
+        border-radius: 12px;
       }
     }
   </style>
 </head>
+
 <body>
+  <main class="container">
+    <section class="topo">
+      <h1>Produtos • Delícia Gourmet 1</h1>
+      <p class="subtitulo">Pesquise um produto e altere o preço diretamente na tabela.</p>
 
-<header>
-  <h1>DELÍCIA GOURMET</h1>
-</header>
+      <div class="pesquisa-box">
+        <input
+          id="pesquisa"
+          type="search"
+          placeholder="Pesquisar produto..."
+          autocomplete="off"
+        />
+      </div>
 
-<div id="banner">
-  ⚡ Aviso Importante:
-</div>
+      <div id="contador" class="contador">Carregando produtos...</div>
+    </section>
 
-<div class="cards">
-  <div class="card">
-    <h3>Contagens</h3>
-    <button onclick="location.href='pages/requisicoes.html'">Contagem Cozinha</button>
-    <button onclick="location.href='https://exemplo.com/contagem-cozinha'">Contagem Cozinha</button>
-    <button onclick="location.href='https://exemplo.com/contagem-cozinha'">Contagem Cozinha</button>
-  </div>
+    <section class="tabela-box">
+      <div class="tabela-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Unidade</th>
+              <th>Local</th>
+              <th>Preço</th>
+            </tr>
+          </thead>
 
-  <div class="card">
-    <h3>Requisições</h3>
-<button onclick="location.href='https://grupodvbr.github.io/requisicoes-DELICIA-GOURMET/'">
-  Requisições Gerais
-</button>
-  </div>
+          <tbody id="corpoTabela">
+            <tr>
+              <td colspan="4" class="status">Carregando...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
-  <div class="card">
-    <h3>Pesquisas</h3>
-    <button onclick="location.href='https://exemplo.com/pesquisa-ambiente'">Pesquisa Ambiente</button>
-    <button onclick="location.href='https://grupodvbr.github.io/avaliacao/'">Deixe sua opinião sobre melhorias para o sistema</button>
-  </div>
-</div>
+  <div id="mensagem" class="mensagem"></div>
 
+  <script>
+    /*
+      TROQUE SOMENTE ESTAS DUAS LINHAS:
+    */
+    const SUPABASE_URL = "https://dxkszikemntfusfyrzos.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed";
+
+    const supabaseClient = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+    const EMPRESA = "DELICIA GOURMET 1";
+
+    const corpoTabela = document.getElementById("corpoTabela");
+    const pesquisa = document.getElementById("pesquisa");
+    const contador = document.getElementById("contador");
+    const mensagem = document.getElementById("mensagem");
+
+    let produtos = [];
+
+    function escaparHtml(valor) {
+      return String(valor ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function normalizarTexto(valor) {
+      return String(valor ?? "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+    }
+
+    function formatarPrecoParaInput(valor) {
+      if (valor === null || valor === undefined || valor === "") {
+        return "";
+      }
+
+      return Number(valor).toFixed(2).replace(".", ",");
+    }
+
+    function converterPreco(valor) {
+      const texto = String(valor ?? "")
+        .trim()
+        .replace(/\s/g, "")
+        .replace("R$", "");
+
+      if (!texto) {
+        return null;
+      }
+
+      let normalizado = texto;
+
+      if (texto.includes(",") && texto.includes(".")) {
+        normalizado = texto.replace(/\./g, "").replace(",", ".");
+      } else if (texto.includes(",")) {
+        normalizado = texto.replace(",", ".");
+      }
+
+      const numero = Number(normalizado);
+
+      if (!Number.isFinite(numero) || numero < 0) {
+        throw new Error("Preço inválido.");
+      }
+
+      return Number(numero.toFixed(2));
+    }
+
+    function exibirMensagem(texto, tipo) {
+      mensagem.textContent = texto;
+      mensagem.className = `mensagem ${tipo}`;
+      mensagem.style.display = "block";
+
+      clearTimeout(window.timerMensagem);
+
+      window.timerMensagem = setTimeout(() => {
+        mensagem.style.display = "none";
+      }, 2800);
+    }
+
+    function renderizarTabela(lista) {
+      contador.textContent =
+        `${lista.length} produto${lista.length === 1 ? "" : "s"} encontrado${lista.length === 1 ? "" : "s"}`;
+
+      if (!lista.length) {
+        corpoTabela.innerHTML = `
+          <tr>
+            <td colspan="4" class="status">
+              Nenhum produto encontrado.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      corpoTabela.innerHTML = lista.map(produto => `
+        <tr>
+          <td class="produto">${escaparHtml(produto.produto)}</td>
+          <td>${escaparHtml(produto.unidade || "-")}</td>
+          <td>${escaparHtml(produto.local_saida || "-")}</td>
+          <td>
+            <div class="preco-box">
+              <input
+                class="preco-input"
+                id="preco-${produto.id}"
+                type="text"
+                inputmode="decimal"
+                value="${escaparHtml(formatarPrecoParaInput(produto.preco))}"
+                placeholder="0,00"
+              />
+
+              <button
+                class="btn-salvar"
+                type="button"
+                onclick="salvarPreco('${produto.id}')"
+              >
+                Salvar
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    async function carregarProdutos() {
+      corpoTabela.innerHTML = `
+        <tr>
+          <td colspan="4" class="status">Carregando produtos...</td>
+        </tr>
+      `;
+
+      const { data, error } = await supabaseClient
+        .from("mercatto_estoque")
+        .select("id, produto, unidade, local_saida, preco")
+        .eq("empresa", EMPRESA)
+        .eq("ativo", true)
+        .order("produto", { ascending: true });
+
+      if (error) {
+        console.error(error);
+
+        corpoTabela.innerHTML = `
+          <tr>
+            <td colspan="4" class="status">
+              Erro ao carregar os produtos.
+            </td>
+          </tr>
+        `;
+
+        contador.textContent = "Erro ao carregar";
+        exibirMensagem(error.message, "erro");
+        return;
+      }
+
+      produtos = data || [];
+      renderizarTabela(produtos);
+    }
+
+    async function salvarPreco(id) {
+      const input = document.getElementById(`preco-${id}`);
+      const botao = input.closest(".preco-box").querySelector(".btn-salvar");
+
+      try {
+        const preco = converterPreco(input.value);
+
+        botao.disabled = true;
+        botao.textContent = "Salvando...";
+
+        const { error } = await supabaseClient
+          .from("mercatto_estoque")
+          .update({
+            preco,
+            atualizado_em: new Date().toISOString()
+          })
+          .eq("id", id)
+          .eq("empresa", EMPRESA);
+
+        if (error) {
+          throw error;
+        }
+
+        const produto = produtos.find(item => item.id === id);
+
+        if (produto) {
+          produto.preco = preco;
+        }
+
+        input.value = formatarPrecoParaInput(preco);
+        exibirMensagem("Preço atualizado com sucesso.", "sucesso");
+      } catch (erro) {
+        console.error(erro);
+        exibirMensagem(erro.message || "Erro ao salvar o preço.", "erro");
+      } finally {
+        botao.disabled = false;
+        botao.textContent = "Salvar";
+      }
+    }
+
+    pesquisa.addEventListener("input", () => {
+      const termo = normalizarTexto(pesquisa.value);
+
+      const filtrados = produtos.filter(produto =>
+        normalizarTexto(produto.produto).includes(termo)
+      );
+
+      renderizarTabela(filtrados);
+    });
+
+    window.salvarPreco = salvarPreco;
+
+    carregarProdutos();
+  </script>
 </body>
 </html>
