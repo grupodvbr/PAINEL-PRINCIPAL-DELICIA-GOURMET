@@ -1,471 +1,5060 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Preços • Delícia Gourmet 1</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <title>Requisição de Produtos • DELÍCIA GOURMET</title>
+  <meta name="theme-color" content="#111827">
+
+  <link rel="manifest" href="./manifest.json">
+
+  <link rel="apple-touch-icon" href="./logos/requisicao.png">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <meta name="apple-mobile-web-app-title" content="Requisição">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    :root {
+
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --line: #e2e8f0;
+
+      --text: #0f172a;
+      --muted: #64748b;
+
+      --primary: #2563eb;
+      --primary2: #1d4ed8;
+
+      --green: #16a34a;
+      --red: #dc2626;
+      --yellow: #ca8a04;
+
+    }
+
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
+      font-family: Inter, sans-serif;
+    }
+
+    html,
+    body {
+      overflow-x: hidden;
+      touch-action: manipulation;
     }
 
     body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f7fb;
-      color: #1f2937;
+
+      background: var(--bg);
+
+      color: var(--text);
+
+      display: flex;
+      justify-content: center;
+
+      padding: 14px;
+
     }
 
     .container {
-      width: min(1100px, calc(100% - 24px));
-      margin: 24px auto;
-    }
 
-    .topo {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-      margin-bottom: 16px;
-    }
-
-    h1 {
-      margin: 0 0 6px;
-      font-size: 24px;
-    }
-
-    .subtitulo {
-      margin: 0;
-      color: #6b7280;
-      font-size: 14px;
-    }
-
-    .pesquisa-box {
-      margin-top: 18px;
-      position: relative;
-    }
-
-    #pesquisa {
       width: 100%;
-      height: 48px;
-      border: 1px solid #dbe2ea;
-      border-radius: 12px;
-      padding: 0 16px;
-      font-size: 16px;
-      outline: none;
-      background: #ffffff;
+      max-width: 680px;
+
     }
 
-    #pesquisa:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
+    .card {
 
-    .tabela-box {
-      background: #ffffff;
-      border-radius: 16px;
+      background: #fff;
+
+      border: 1px solid var(--line);
+
+      border-radius: 28px;
+
       overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+
+      box-shadow:
+        0 15px 40px rgba(0, 0, 0, .05);
+
     }
 
-    .tabela-scroll {
-      overflow-x: auto;
+    .header {
+
+      padding: 26px;
+
+      background:
+        linear-gradient(135deg,
+          #111827,
+          #1e293b);
+
+      color: #fff;
+
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 720px;
+    .logo {
+
+      font-size: 28px;
+      font-weight: 800;
+
     }
 
-    thead {
-      background: #eef4ff;
-    }
+    .sub {
 
-    th,
-    td {
-      padding: 14px 16px;
-      border-bottom: 1px solid #edf0f4;
-      text-align: left;
-      vertical-align: middle;
-    }
+      margin-top: 6px;
 
-    th {
+      color: #cbd5e1;
+
       font-size: 13px;
-      color: #475569;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+
     }
 
-    td {
-      font-size: 14px;
+    .content {
+
+      padding: 22px;
+
     }
 
-    tbody tr:hover {
-      background: #fafcff;
-    }
+    label {
 
-    .produto {
+      display: block;
+
+      margin-top: 16px;
+      margin-bottom: 8px;
+
+      font-size: 13px;
       font-weight: 700;
+
     }
 
-    .preco-box {
+    input,
+    select,
+    textarea {
+
+      width: 100%;
+
+      border: 1px solid var(--line);
+
+      border-radius: 16px;
+
+      padding: 14px;
+
+      background: #fff;
+
+      font-size: 14px;
+
+      outline: none;
+
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+
+      border-color: #3b82f6;
+
+      box-shadow:
+        0 0 0 4px rgba(59, 130, 246, .12);
+
+    }
+
+    textarea {
+
+      min-height: 90px;
+      resize: none;
+
+    }
+
+    .readonly {
+
+      background: #f8fafc;
+
+      color: #475569;
+
+      font-weight: 700;
+
+    }
+
+    .btn {
+
+      width: 100%;
+
+      height: 54px;
+
+      border: none;
+
+      border-radius: 18px;
+
+      font-size: 15px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      margin-top: 22px;
+
+      transition: .2s;
+
+    }
+
+    .btn-primary {
+
+      background:
+        linear-gradient(135deg,
+          var(--primary),
+          var(--primary2));
+
+      color: #fff;
+
+    }
+
+    .btn-primary:hover {
+
+      transform: translateY(-1px);
+
+      opacity: .95;
+
+    }
+
+    .btn-danger {
+
+      background: #ef4444;
+      color: #fff;
+
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .topActions {
+      display: flex;
+      gap: 10px;
+      margin: 16px 0 8px;
+    }
+
+    .btn-book {
+      width: 100%;
+      min-height: 50px;
+      border: none;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #0f172a, #2563eb);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(37, 99, 235, .20);
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 10px;
     }
 
-    .preco-input {
-      width: 130px;
-      height: 40px;
-      border: 1px solid #cfd8e3;
-      border-radius: 9px;
-      padding: 0 10px;
-      font-size: 15px;
-      outline: none;
+    .historicoOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .76);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+      padding: 16px;
     }
 
-    .preco-input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    .historicoCard {
+      width: 100%;
+      max-width: 640px;
+      max-height: 86vh;
+      background: #fff;
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 26px 70px rgba(0, 0, 0, .25);
+      display: flex;
+      flex-direction: column;
     }
 
-    .btn-salvar {
-      height: 40px;
-      border: 0;
-      border-radius: 9px;
-      padding: 0 14px;
-      background: #2563eb;
-      color: white;
+    .historicoTop {
+      padding: 18px;
+      background: linear-gradient(135deg, #0f172a, #1d4ed8);
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .historicoTitulo {
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .historicoSub {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #dbeafe;
       font-weight: 700;
+    }
+
+    .historicoClose {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .15);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 900;
       cursor: pointer;
     }
 
-    .btn-salvar:hover {
-      background: #1d4ed8;
+    .historicoBody {
+      padding: 16px;
+      overflow-y: auto;
+      background: #f8fafc;
     }
 
-    .btn-salvar:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .historicoItem {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, .04);
     }
 
-    .status {
-      padding: 18px;
-      text-align: center;
-      color: #64748b;
+    .historicoItemTop {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
     }
 
-    .mensagem {
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      padding: 13px 16px;
-      border-radius: 10px;
-      color: #ffffff;
+    .historicoProduto {
+      font-size: 14px;
+      font-weight: 900;
+      color: #0f172a;
+    }
+
+    .historicoMeta {
+      margin-top: 7px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 12px;
+      color: #475569;
       font-weight: 700;
-      box-shadow: 0 10px 30px rgba(0,0,0,.18);
-      display: none;
-      z-index: 9999;
     }
 
-    .mensagem.sucesso {
-      background: #16a34a;
+    .statusBadge {
+      white-space: nowrap;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 10px;
+      font-weight: 900;
     }
 
-    .mensagem.erro {
-      background: #dc2626;
+    .statusPendente {
+      background: #fef3c7;
+      color: #92400e;
     }
 
-    .contador {
-      margin-top: 10px;
+    .statusEntregue {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .statusNegado {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+
+    .lista {
+
+      margin-top: 8px;
+
+      border: 1px solid var(--line);
+
+      border-radius: 18px;
+
+      overflow: hidden;
+
+      max-height: 240px;
+
+      overflow-y: auto;
+
+      background: #fff;
+
+    }
+
+    .item {
+
+      padding: 14px 16px;
+
+      border-bottom: 1px solid #f1f5f9;
+
+      cursor: pointer;
+
+      transition: .2s;
+
+    }
+
+    .item:hover {
+
+      background: #f8fafc;
+
+    }
+
+    .item-top {
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 12px;
+
+    }
+
+    .nome {
+
+      font-weight: 700;
+      font-size: 14px;
+
+    }
+
+    .info {
+
+      margin-top: 4px;
+
       color: #64748b;
+
+      font-size: 12px;
+
+    }
+
+    .badge {
+
+      padding: 6px 10px;
+
+      border-radius: 999px;
+
+      font-size: 11px;
+      font-weight: 700;
+
+    }
+
+    .ok {
+
+      background: #dcfce7;
+      color: #166534;
+
+    }
+
+    .off {
+
+      background: #fee2e2;
+      color: #991b1b;
+
+    }
+
+    .table {
+
+      margin-top: 24px;
+
+      border: 1px solid var(--line);
+
+      border-radius: 22px;
+
+      overflow: hidden;
+
+    }
+
+    table {
+
+      width: 100%;
+      border-collapse: collapse;
+
+    }
+
+    th {
+
+      background: #f8fafc;
+
+      padding: 14px;
+
+      text-align: left;
+
+      font-size: 12px;
+      font-weight: 800;
+
+      border-bottom: 1px solid var(--line);
+
+    }
+
+    td {
+
+      padding: 14px;
+
+      border-bottom: 1px solid #f1f5f9;
+
       font-size: 13px;
+
     }
 
-    @media (max-width: 600px) {
-      .container {
-        width: min(100% - 12px, 1100px);
-        margin: 10px auto;
+    .overlay {
+
+      position: fixed;
+      inset: 0;
+
+      background: rgba(15, 23, 42, .72);
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      z-index: 9999;
+
+    }
+
+    .loader {
+
+      background: #fff;
+
+      padding: 30px 40px;
+
+      border-radius: 26px;
+
+      text-align: center;
+
+      font-weight: 800;
+
+    }
+
+    .dot {
+
+      width: 14px;
+      height: 14px;
+
+      border-radius: 50%;
+
+      background: #2563eb;
+
+      margin: auto auto 16px;
+
+      animation: pulse 1s infinite;
+
+    }
+
+    @keyframes pulse {
+
+      0% {
+        transform: scale(1);
+        opacity: 1;
       }
 
-      .topo {
+      50% {
+        transform: scale(1.4);
+        opacity: .4;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+    }
+
+    .popupAviso {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+      padding: 14px;
+      backdrop-filter: blur(8px);
+    }
+
+    .popupCard {
+      width: 100%;
+      max-width: 390px;
+      background: #f8fafc;
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 26px 70px rgba(0, 0, 0, .28);
+      animation: fadeUp .25s ease;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255, 255, 255, .35);
+    }
+
+    .popupTop {
+      background: linear-gradient(135deg, #0f172a, #1d4ed8);
+      padding: 18px;
+      color: #fff;
+      display: flex;
+      gap: 13px;
+      align-items: center;
+    }
+
+    .popupIcon {
+      min-width: 46px;
+      height: 46px;
+      border-radius: 17px;
+      background: rgba(255, 255, 255, .14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      backdrop-filter: blur(10px);
+    }
+
+    .popupTitulo {
+      font-size: 18px;
+      font-weight: 1000;
+      line-height: 1.15;
+    }
+
+    .popupSub {
+      margin-top: 4px;
+      color: #dbeafe;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .popupBody {
+      padding: 14px;
+      overflow-y: auto;
+      max-height: calc(88vh - 95px);
+      background: #f8fafc;
+    }
+
+    .popupTexto {
+      color: #334155;
+      word-break: break-word;
+    }
+
+    .avisoBox {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, .05);
+    }
+
+    .avisoDestaque {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 13px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #eff6ff, #f8fafc);
+      border: 1px solid #dbeafe;
+      margin-bottom: 12px;
+    }
+
+    .avisoDestaqueIcon {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border-radius: 13px;
+      background: #2563eb;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+    }
+
+    .avisoDestaqueTexto {
+      font-size: 14px;
+      font-weight: 1000;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+
+    .avisoLinha {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-bottom: 1px solid #eef2f7;
+    }
+
+    .avisoLinha:last-child {
+      border-bottom: none;
+    }
+
+    .avisoMarcador {
+      width: 26px;
+      height: 26px;
+      min-width: 26px;
+      border-radius: 10px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .avisoLinhaTexto {
+      font-size: 13px;
+      line-height: 1.45;
+      color: #334155;
+      font-weight: 650;
+    }
+
+    .popupBtn {
+      width: 100%;
+      min-height: 48px;
+      border: none;
+      border-radius: 17px;
+      margin-top: 14px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 1000;
+      cursor: pointer;
+      box-shadow: 0 12px 26px rgba(37, 99, 235, .22);
+    }
+
+    .popupBtn:hover {
+      transform: translateY(-1px);
+      opacity: .96;
+    }
+
+    @media(max-width:640px) {
+      .popupAviso {
+        padding: 10px;
+        align-items: flex-end;
+      }
+
+      .popupCard {
+        max-width: 100%;
+        border-radius: 26px 26px 20px 20px;
+        max-height: 90vh;
+      }
+
+      .popupTop {
         padding: 16px;
-        border-radius: 12px;
       }
 
-      h1 {
-        font-size: 20px;
+      .popupBody {
+        max-height: calc(90vh - 88px);
+        padding: 12px;
       }
 
-      .tabela-box {
-        border-radius: 12px;
+      .avisoBox {
+        padding: 14px;
+        border-radius: 20px;
+      }
+
+      .avisoLinhaTexto {
+        font-size: 12.5px;
       }
     }
+
+    @keyframes fadeUp {
+
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+
+    .toastSucesso {
+
+      position: fixed;
+
+      left: 50%;
+      bottom: 26px;
+
+      transform: translateX(-50%) translateY(120px);
+
+      min-width: 280px;
+      max-width: 90%;
+
+      background: linear-gradient(135deg,
+          #16a34a,
+          #15803d);
+
+      color: #fff;
+
+      padding: 16px 22px;
+
+      border-radius: 22px;
+
+      display: flex;
+      align-items: center;
+      gap: 14px;
+
+      font-size: 14px;
+      font-weight: 700;
+
+      z-index: 999999;
+
+      box-shadow:
+        0 20px 40px rgba(0, 0, 0, .22);
+
+      opacity: 0;
+
+      transition: .35s ease;
+
+    }
+
+    .toastSucesso.show {
+
+      opacity: 1;
+
+      transform: translateX(-50%) translateY(0);
+
+    }
+
+    .toastIcon {
+
+      width: 34px;
+      height: 34px;
+
+      border-radius: 50%;
+
+      background: rgba(255, 255, 255, .18);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 18px;
+      font-weight: 900;
+
+    }
+
+
+
+    .area-card {
+      margin-top: 18px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, .04);
+    }
+
+    .area-card+.area-card {
+      margin-top: 20px;
+    }
+
+    .area-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #eef2f7;
+    }
+
+    .area-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.2;
+    }
+
+    .area-subtitle {
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748b;
+      line-height: 1.35;
+    }
+
+    .area-icon {
+      min-width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .user-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field-block {
+      margin-top: 14px;
+    }
+
+    .field-block label {
+      margin-top: 0;
+    }
+
+    .separator-line {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 18px 0 4px;
+    }
+
+    .painel-titulo-acougue {
+      margin-bottom: 10px;
+      padding: 14px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: #fff;
+    }
+
+    .painel-titulo-acougue strong {
+      display: block;
+      font-size: 16px;
+      font-weight: 1000;
+    }
+
+    .painel-titulo-acougue span {
+      display: block;
+      margin-top: 4px;
+      color: #dbeafe;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .setor-grupo-card {
+      background: #f8fafc;
+      border: 1px solid #dbeafe;
+      border-radius: 26px;
+      padding: 16px;
+      margin-top: 12px;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, .06);
+    }
+
+.pedido-acougue-card {
+  background: rgba(255,255,255,.94);
+  border: 1px solid rgba(255,255,255,.45);
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.12);
+}
+
+    .pedido-acougue-card+.pedido-acougue-card {
+      margin-top: 12px;
+    }
+
+    .mini-label {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 4px;
+    }
+
+    .btn-setor-entrega {
+      width: 100%;
+      min-height: 52px;
+      border: none;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 1000;
+      margin-top: 14px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(22, 163, 74, .25);
+      padding: 12px;
+    }
+
+
+    .senhaLoginOverlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top, rgba(37, 99, 235, .28), rgba(15, 23, 42, .86));
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000000;
+      padding: 18px;
+      backdrop-filter: blur(10px);
+    }
+
+    .senhaLoginCard {
+      width: 100%;
+      max-width: 380px;
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .32);
+      animation: fadeUp .25s ease;
+      border: 1px solid rgba(255, 255, 255, .45);
+    }
+
+    .senhaLoginTop {
+      background: linear-gradient(135deg, #0f172a, #1d4ed8);
+      color: #fff;
+      padding: 22px;
+      position: relative;
+    }
+
+    .senhaLoginIcon {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      margin-bottom: 14px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
+    }
+
+    .senhaLoginTitulo {
+      font-size: 21px;
+      font-weight: 1000;
+      line-height: 1.15;
+    }
+
+    .senhaLoginSub {
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #dbeafe;
+      line-height: 1.4;
+    }
+
+    .senhaLoginFechar {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .14);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 1000;
+      cursor: pointer;
+    }
+
+    .senhaLoginBody {
+      padding: 22px;
+    }
+
+    .senhaLoginInput {
+      height: 60px;
+      border-radius: 20px;
+      text-align: center;
+      letter-spacing: 8px;
+      font-size: 25px;
+      font-weight: 1000;
+      color: #0f172a;
+      border: 2px solid #dbeafe;
+      background: #fff;
+      padding-left: 22px;
+    }
+
+    .senhaLoginInput:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 5px rgba(37, 99, 235, .14);
+    }
+
+    .senhaLoginErro {
+      display: none;
+      margin-top: 12px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #991b1b;
+      border-radius: 16px;
+      padding: 11px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .senhaLoginUsuarioEncontrado {
+      display: none;
+      margin-top: 12px;
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      color: #166534;
+      border-radius: 16px;
+      padding: 11px 12px;
+      font-size: 12px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .senhaLoginBtn {
+      width: 100%;
+      min-height: 54px;
+      border: none;
+      border-radius: 19px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 1000;
+      cursor: pointer;
+      margin-top: 16px;
+      box-shadow: 0 14px 28px rgba(37, 99, 235, .24);
+    }
+
+    .senhaLoginBtn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .loginWelcome {
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+      border: 1px solid #e2e8f0;
+      border-radius: 26px;
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 14px 34px rgba(15, 23, 42, .05);
+    }
+
+    .loginWelcomeIcon {
+      width: 64px;
+      height: 64px;
+      border-radius: 22px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin: 0 auto 14px;
+    }
+
+    .loginWelcomeTitle {
+      font-size: 20px;
+      font-weight: 1000;
+      color: #0f172a;
+    }
+
+    .loginWelcomeSub {
+      margin-top: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #64748b;
+      line-height: 1.45;
+    }
+
+
+    /* ======================================================
+       PAINEL AÇOUGUE / SETORES • VERSÃO SIMPLES E RÁPIDA
+       Mostra somente pendentes: item, qtd, unidade, quem pediu,
+       data/hora, editar qtd, negar e entregar por setor.
+    ====================================================== */
+
+    .setor-grupo-card {
+      background: #ffffff;
+      border: 1px solid #dbeafe;
+      border-radius: 22px;
+      padding: 14px;
+      margin-top: 12px;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, .06);
+    }
+
+    .setor-grupo-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 10px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid #eef2f7;
+    }
+
+    .setor-grupo-nome {
+      font-size: 15px;
+      font-weight: 1000;
+      color: #0f172a;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .setor-grupo-contador {
+      margin-top: 3px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+    }
+
+    .setor-badge {
+      min-width: fit-content;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 10px;
+      font-weight: 1000;
+      color: #fff;
+    }
+
+    .pedido-acougue-lista {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pedido-acougue-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 10px;
+      box-shadow: none;
+    }
+
+    .pedido-linha-principal {
+      display: grid;
+      grid-template-columns: 1fr 92px 64px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pedido-produto-nome {
+      font-size: 13px;
+      font-weight: 1000;
+      color: #0f172a;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .pedido-qtd-input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid #cbd5e1;
+      border-radius: 13px;
+      background: #fff;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 1000;
+      color: #0f172a;
+      outline: none;
+      padding: 8px;
+    }
+
+    .pedido-qtd-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+    }
+
+    .pedido-unidade {
+      height: 38px;
+      border-radius: 13px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 1000;
+      border: 1px solid #dbeafe;
+      text-transform: uppercase;
+    }
+
+    .pedido-meta-simples {
+      margin-top: 8px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+      line-height: 1.35;
+    }
+
+    .pedido-meta-simples strong {
+      color: #0f172a;
+      font-weight: 1000;
+    }
+
+    .pedido-data-hora {
+      color: #475569;
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .pedido-acoes-simples {
+      margin-top: 8px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .btn-negar-pedido {
+      min-height: 34px;
+      border: none;
+      border-radius: 12px;
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 11px;
+      font-weight: 1000;
+      cursor: pointer;
+      padding: 8px 11px;
+    }
+
+    .btn-negar-pedido:hover {
+      background: #fecaca;
+    }
+
+    .btn-setor-entrega {
+      width: 100%;
+      min-height: 48px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 1000;
+      margin-top: 12px;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(22, 163, 74, .22);
+      padding: 11px;
+    }
+
+    .btn-setor-entrega:hover {
+      transform: translateY(-1px);
+      opacity: .96;
+    }
+
+    @media(max-width:640px) {
+      .pedido-linha-principal {
+        grid-template-columns: 1fr 76px 54px;
+        gap: 6px;
+      }
+
+      .pedido-produto-nome {
+        font-size: 12.5px;
+      }
+
+      .pedido-qtd-input {
+        height: 36px;
+        font-size: 13px;
+        border-radius: 12px;
+      }
+
+      .pedido-unidade {
+        height: 36px;
+        font-size: 11px;
+        border-radius: 12px;
+      }
+
+      .pedido-meta-simples {
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+
+      .pedido-data-hora {
+        text-align: left;
+        white-space: normal;
+      }
+
+      .setor-grupo-card {
+        padding: 12px;
+        border-radius: 20px;
+      }
+    }
+
+
+    @media(max-width:640px) {
+
+      body {
+        padding: 10px;
+      }
+
+      .content {
+        padding: 16px;
+      }
+
+      .header {
+        padding: 20px;
+      }
+
+      .logo {
+        font-size: 22px;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: 12px;
+        font-size: 13px;
+      }
+
+      .btn {
+        height: 48px;
+        font-size: 14px;
+        border-radius: 14px;
+      }
+
+      .user-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .area-card {
+        padding: 14px;
+        border-radius: 20px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        font-size: 12px;
+      }
+
+    }
+
+
+
+
+
+
+/* ======================================================
+   AJUSTE COMPACTO • CARD DADOS DO USUÁRIO + HISTÓRICO
+====================================================== */
+
+#appArea > .area-card:first-child {
+  margin-top: 10px !important;
+  padding: 12px 16px !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, .05) !important;
+}
+
+#appArea > .area-card:first-child .area-head {
+  margin-bottom: 10px !important;
+  padding-bottom: 8px !important;
+  gap: 8px !important;
+}
+
+#appArea > .area-card:first-child .area-title {
+  font-size: 14px !important;
+  line-height: 1.15 !important;
+}
+
+#appArea > .area-card:first-child .area-subtitle {
+  font-size: 11px !important;
+  margin-top: 3px !important;
+  line-height: 1.25 !important;
+}
+
+#appArea > .area-card:first-child .area-icon {
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  border-radius: 14px !important;
+  font-size: 17px !important;
+}
+
+#appArea > .area-card:first-child .user-grid {
+  gap: 8px !important;
+}
+
+#appArea > .area-card:first-child .field-block {
+  margin-top: 8px !important;
+}
+
+#appArea > .area-card:first-child label {
+  margin-bottom: 5px !important;
+  font-size: 11px !important;
+}
+
+#appArea > .area-card:first-child input {
+  min-height: 38px !important;
+  padding: 9px 12px !important;
+  border-radius: 13px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+}
+
+#appArea > .area-card:first-child .topActions {
+  margin: 10px 0 0 !important;
+}
+
+#appArea > .area-card:first-child .btn-book {
+  min-height: 42px !important;
+  height: 42px !important;
+  border-radius: 15px !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  gap: 7px !important;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, .18) !important;
+}
+
+#appArea > .area-card:first-child .btn-book span {
+  font-size: 15px !important;
+}
+
+/* CELULAR MAIS COMPACTO AINDA */
+@media(max-width:640px) {
+
+  #appArea > .area-card:first-child {
+    padding: 10px 12px !important;
+    border-radius: 18px !important;
+  }
+
+  #appArea > .area-card:first-child .area-head {
+    margin-bottom: 8px !important;
+    padding-bottom: 7px !important;
+  }
+
+  #appArea > .area-card:first-child .area-title {
+    font-size: 13px !important;
+  }
+
+  #appArea > .area-card:first-child .area-subtitle {
+    font-size: 10.5px !important;
+  }
+
+  #appArea > .area-card:first-child .user-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 7px !important;
+  }
+
+  #appArea > .area-card:first-child input {
+    min-height: 36px !important;
+    padding: 8px 10px !important;
+    font-size: 11.5px !important;
+    border-radius: 12px !important;
+  }
+
+  #appArea > .area-card:first-child .btn-book {
+    min-height: 38px !important;
+    height: 38px !important;
+    font-size: 11px !important;
+    border-radius: 13px !important;
+  }
+
+}
+
+
+
+
+
+
+
+    
   </style>
 </head>
 
 <body>
-  <main class="container">
-    <section class="topo">
-      <h1>Produtos • Delícia Gourmet 1</h1>
-      <p class="subtitulo">Pesquise um produto e altere o preço diretamente na tabela.</p>
 
-      <div class="pesquisa-box">
-        <input
-          id="pesquisa"
-          type="search"
-          placeholder="Pesquisar produto..."
-          autocomplete="off"
-        />
+
+  <div class="senhaLoginOverlay" id="popupSenhaSistema">
+
+    <div class="senhaLoginCard">
+
+      <div class="senhaLoginTop">
+
+        <button class="senhaLoginFechar" id="btnFecharSenhaSistema" onclick="fecharPopupSenhaSistema()">
+          ×
+        </button>
+
+        <div class="senhaLoginIcon" id="senhaSistemaIcon">
+          🔐
+        </div>
+
+        <div class="senhaLoginTitulo" id="senhaSistemaTitulo">
+          Entrar com senha
+        </div>
+
+        <div class="senhaLoginSub" id="senhaSistemaSubtitulo">
+          Digite sua senha. O sistema identifica seu usuário automaticamente.
+        </div>
+
       </div>
 
-      <div id="contador" class="contador">Carregando produtos...</div>
-    </section>
+      <div class="senhaLoginBody">
 
-    <section class="tabela-box">
-      <div class="tabela-scroll">
-        <table>
-          <thead>
-            <tr>
-              <th>Produto</th>
-              <th>Unidade</th>
-              <th>Local</th>
-              <th>Preço</th>
-            </tr>
-          </thead>
+        <label style="margin-top:0; text-align:center;">
+          Senha
+        </label>
 
-          <tbody id="corpoTabela">
-            <tr>
-              <td colspan="4" class="status">Carregando...</td>
-            </tr>
-          </tbody>
-        </table>
+<input
+  id="senhaSistemaInput"
+  class="senhaLoginInput"
+  type="password"
+  inputmode="numeric"
+  pattern="[0-9]*"
+  autocomplete="off"
+  name="campo_temporario_senha_sistema"
+  data-lpignore="true"
+  data-1p-ignore="true"
+  data-form-type="other"
+  autocorrect="off"
+  autocapitalize="off"
+  spellcheck="false"
+  placeholder="••••"
+  onkeydown="if(event.key === 'Enter'){ confirmarSenhaSistema() }"
+>
+
+        <div class="senhaLoginErro" id="senhaSistemaErro"></div>
+
+        <div class="senhaLoginUsuarioEncontrado" id="senhaSistemaUsuario"></div>
+
+        <button
+          class="senhaLoginBtn"
+          id="senhaSistemaBotao"
+          onclick="confirmarSenhaSistema()"
+        >
+          CONFIRMAR SENHA
+        </button>
+
       </div>
-    </section>
-  </main>
 
-  <div id="mensagem" class="mensagem"></div>
+    </div>
 
-  <script>
-    /*
-      TROQUE SOMENTE ESTAS DUAS LINHAS:
-    */
-    const SUPABASE_URL = "https://dxkszikemntfusfyrzos.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed";
+  </div>
 
-    const supabaseClient = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    );
+  <div class="historicoOverlay" id="popupHistorico24h">
 
-    const EMPRESA = "DELICIA GOURMET 1";
+    <div class="historicoCard">
 
-    const corpoTabela = document.getElementById("corpoTabela");
-    const pesquisa = document.getElementById("pesquisa");
-    const contador = document.getElementById("contador");
-    const mensagem = document.getElementById("mensagem");
+      <div class="historicoTop">
 
-    let produtos = [];
+        <div>
 
-    function escaparHtml(valor) {
-      return String(valor ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
+          <div class="historicoTitulo">
+            📘 Histórico do Setor
+          </div>
 
-    function normalizarTexto(valor) {
-      return String(valor ?? "")
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
-        .trim();
-    }
+          <div class="historicoSub" id="historicoSubtitulo">
+            Produtos pedidos nas últimas 24 horas
+          </div>
 
-    function formatarPrecoParaInput(valor) {
-      if (valor === null || valor === undefined || valor === "") {
-        return "";
-      }
+        </div>
 
-      return Number(valor).toFixed(2).replace(".", ",");
-    }
+        <button class="historicoClose" onclick="fecharHistorico24h()">
+          ×
+        </button>
 
-    function converterPreco(valor) {
-      const texto = String(valor ?? "")
-        .trim()
-        .replace(/\s/g, "")
-        .replace("R$", "");
+      </div>
 
-      if (!texto) {
-        return null;
-      }
+      <div class="historicoBody" id="historicoLista24h">
 
-      let normalizado = texto;
+        <div style="
+            background:#fff;
+            border:1px solid #e2e8f0;
+            border-radius:18px;
+            padding:18px;
+            text-align:center;
+            font-size:13px;
+            font-weight:800;
+            color:#64748b;
+          ">
+          Carregando histórico...
+        </div>
 
-      if (texto.includes(",") && texto.includes(".")) {
-        normalizado = texto.replace(/\./g, "").replace(",", ".");
-      } else if (texto.includes(",")) {
-        normalizado = texto.replace(",", ".");
-      }
+      </div>
 
-      const numero = Number(normalizado);
+    </div>
 
-      if (!Number.isFinite(numero) || numero < 0) {
-        throw new Error("Preço inválido.");
-      }
+  </div>
 
-      return Number(numero.toFixed(2));
-    }
 
-    function exibirMensagem(texto, tipo) {
-      mensagem.textContent = texto;
-      mensagem.className = `mensagem ${tipo}`;
-      mensagem.style.display = "block";
+  <div class="overlay" id="overlay">
 
-      clearTimeout(window.timerMensagem);
+    <div class="loader">
 
-      window.timerMensagem = setTimeout(() => {
-        mensagem.style.display = "none";
-      }, 2800);
-    }
+      <div class="dot"></div>
 
-    function renderizarTabela(lista) {
-      contador.textContent =
-        `${lista.length} produto${lista.length === 1 ? "" : "s"} encontrado${lista.length === 1 ? "" : "s"}`;
+      Enviando requisição...
 
-      if (!lista.length) {
-        corpoTabela.innerHTML = `
-          <tr>
-            <td colspan="4" class="status">
-              Nenhum produto encontrado.
-            </td>
-          </tr>
-        `;
-        return;
-      }
+    </div>
 
-      corpoTabela.innerHTML = lista.map(produto => `
-        <tr>
-          <td class="produto">${escaparHtml(produto.produto)}</td>
-          <td>${escaparHtml(produto.unidade || "-")}</td>
-          <td>${escaparHtml(produto.local_saida || "-")}</td>
-          <td>
-            <div class="preco-box">
-              <input
-                class="preco-input"
-                id="preco-${produto.id}"
-                type="text"
-                inputmode="decimal"
-                value="${escaparHtml(formatarPrecoParaInput(produto.preco))}"
-                placeholder="0,00"
-              />
+  </div>
+
+  <div class="popupAviso" id="popupAviso">
+
+    <div class="popupCard">
+
+      <div class="popupTop">
+
+        <div class="popupIcon">
+          🔔
+        </div>
+
+        <div class="popupTitulo">
+          Aviso do Sistema
+        </div>
+
+        <div class="popupSub">
+          Atualizações e comunicados internos
+        </div>
+
+      </div>
+
+      <div class="popupBody">
+
+        <div class="popupTexto" id="textoAviso"></div>
+
+        <button
+        class="popupBtn"
+        onclick="fecharAviso()"
+      >
+        ENTENDI
+      </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="container">
+
+    <div class="card">
+
+      <div class="header">
+
+        <div class="logo">
+          Requisição Delícia Gourmet
+        </div>
+
+        <div class="sub">
+          Sistema interno de requisições
+        </div>
+
+      </div>
+
+      <div class="content">
+
+        <div id="loginArea">
+
+          <div class="loginWelcome">
+
+            <div class="loginWelcomeIcon">
+              🔐
+            </div>
+
+            <div class="loginWelcomeTitle">
+              Acesso por senha
+            </div>
+
+            <div class="loginWelcomeSub">
+              Digite apenas sua senha. O sistema encontra seu usuário automaticamente e preenche solicitante e setor.
+            </div>
+
+            <button
+              class="btn btn-primary"
+              onclick="abrirPopupSenhaLogin()"
+            >
+              ENTRAR COM SENHA
+            </button>
+
+          </div>
+
+        </div>
+
+        <div id="appArea" class="hidden">
+
+          <div class="area-card">
+
+            <div class="area-head">
+
+              <div>
+                <div class="area-title">👤 Dados do usuário</div>
+                <div class="area-subtitle">Identificação automática do solicitante logado.</div>
+              </div>
+
+              <div class="area-icon">✓</div>
+
+            </div>
+
+            <div class="user-grid">
+
+              <div class="field-block">
+                <label>Solicitante</label>
+                <input id="solicitante" class="readonly" readonly>
+              </div>
+
+              <div class="field-block">
+                <label>Setor</label>
+                <input id="setor" class="readonly" readonly>
+              </div>
+
+            </div>
+
+            <div class="topActions">
 
               <button
-                class="btn-salvar"
-                type="button"
-                onclick="salvarPreco('${produto.id}')"
+                class="btn-book"
+                onclick="abrirHistorico24h()"
               >
-                Salvar
+                <span style="font-size:20px;">📘</span>
+                VER HISTÓRICO DE PEDIDOS DO SETOR
               </button>
+
             </div>
-          </td>
-        </tr>
-      `).join("");
+
+          </div>
+
+          <div class="area-card">
+
+            <div class="area-head">
+
+              <div>
+                <div class="area-title">📝 FAZER MEU PEDIDO</div>
+                <div class="area-subtitle">Preencha produto, quantidade e observação apenas deste item.</div>
+              </div>
+
+              <div class="area-icon">+</div>
+
+            </div>
+
+            <div class="field-block">
+              <label>Produto</label>
+              <input
+                id="produto"
+                placeholder="Digite o produto..."
+                autocomplete="off"
+              >
+            </div>
+
+            <div id="listaProdutos" class="lista"></div>
+
+            <div class="field-block">
+              <label id="labelQuantidade">Quantidade</label>
+              <input
+                id="quantidade"
+                type="text"
+                inputmode="decimal"
+                placeholder="Digite a quantidade"
+              >
+            </div>
+
+            <div class="field-block">
+              <label>Observações</label>
+              <textarea id="obs" placeholder="Observações deste pedido..."></textarea>
+            </div>
+
+            <button
+              class="btn btn-primary"
+              onclick="enviar()"
+            >
+              ENVIAR ITEM
+            </button>
+
+          </div>
+
+          <div id="painelAcougue" class="area-card hidden">
+
+            <div class="area-head">
+
+              <div>
+                <div class="area-title">🥩 PEDIDOS DAS COZINHAS</div>
+                <div class="area-subtitle">Lista simples de pendências por setor. Edite quantidade, negue item ou entregue o setor com senha.</div>
+              </div>
+
+              <div class="area-icon">🥩</div>
+
+            </div>
+
+            <div class="painel-titulo-acougue">
+              <strong>Pedidos pendentes do açougue</strong>
+              <span>Mostra somente pendentes. Cada setor tem sua entrega com assinatura separada.</span>
+            </div>
+
+            <div id="listaPedidosAcougue" style="
+              display:flex;
+              flex-direction:column;
+              gap:14px;
+              margin-top:10px;
+            "></div>
+
+          </div>
+
+          <div class="area-card">
+
+            <div class="area-head">
+
+              <div>
+                <div class="area-title">📋 MEUS PEDIDOS</div>
+                <div class="area-subtitle">Últimos 20 pedidos feitos.</div>
+              </div>
+
+              <div class="area-icon">📋</div>
+
+            </div>
+
+            <div class="table">
+
+              <table>
+
+                <thead>
+
+                  <tr>
+                    <th>Produto</th>
+                    <th>Qtd</th>
+                    <th>Status</th>
+                  </tr>
+
+                </thead>
+
+                <tbody id="tabela"></tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+          <button
+            class="btn btn-danger"
+            onclick="logout()"
+          >
+            SAIR
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sb = supabase.createClient(
+
+  "https://dxkszikemntfusfyrzos.supabase.co",
+
+  "sb_publishable_NNFvdfSXgOdGGVcSbphbjQ_brC3_9ed"
+
+)
+
+let dadosUsuario = null
+let produtoSelecionado = null
+let produtoManual = null
+let observacaoBloqueada = ""
+let resolverSenhaSistema = null
+let modoSenhaSistema = "login"
+let contextoSenhaSistema = null
+
+function limparEstadoPopupSenha(){
+
+  senhaSistemaInput.value = ""
+  senhaSistemaErro.style.display = "none"
+  senhaSistemaErro.innerHTML = ""
+  senhaSistemaUsuario.style.display = "none"
+  senhaSistemaUsuario.innerHTML = ""
+  senhaSistemaBotao.disabled = false
+  senhaSistemaBotao.innerHTML = "CONFIRMAR SENHA"
+
+}
+
+function abrirPopupSenhaBase(config = {}){
+
+  modoSenhaSistema = config.modo || "login"
+  contextoSenhaSistema = config.contexto || null
+
+  senhaSistemaIcon.innerHTML = config.icone || "🔐"
+  senhaSistemaTitulo.innerHTML = config.titulo || "Entrar com senha"
+  senhaSistemaSubtitulo.innerHTML = config.subtitulo || "Digite sua senha. O sistema identifica seu usuário automaticamente."
+  senhaSistemaBotao.innerHTML = config.botao || "CONFIRMAR SENHA"
+
+  btnFecharSenhaSistema.style.display =
+    config.bloquearFechar
+      ? "none"
+      : "block"
+
+  limparEstadoPopupSenha()
+
+  popupSenhaSistema.style.display = "flex"
+
+  setTimeout(()=>{
+
+    senhaSistemaInput.focus()
+
+  }, 180)
+
+}
+
+function abrirPopupSenhaLogin(){
+
+  abrirPopupSenhaBase({
+    modo:"login",
+    icone:"🔐",
+    titulo:"Entrar com senha",
+    subtitulo:"Digite apenas sua senha. O sistema encontra seu usuário e preenche tudo automaticamente.",
+    botao:"ENTRAR"
+  })
+
+}
+
+function fecharPopupSenhaSistema(){
+
+  popupSenhaSistema.style.display = "none"
+
+  if(resolverSenhaSistema){
+
+    resolverSenhaSistema(null)
+    resolverSenhaSistema = null
+
+  }
+
+}
+
+async function buscarUsuarioPelaSenha(senhaDigitada){
+
+  const { data, error } = await sb
+
+    .from("usuarios_do_sistema")
+
+    .select("*")
+
+    .eq("senha", senhaDigitada)
+
+    .limit(2)
+
+  if(error){
+
+    console.log(error)
+
+    return {
+      ok:false,
+      erro:"Erro ao validar senha"
     }
 
-    async function carregarProdutos() {
-      corpoTabela.innerHTML = `
-        <tr>
-          <td colspan="4" class="status">Carregando produtos...</td>
-        </tr>
-      `;
+  }
 
-      const { data, error } = await supabaseClient
-        .from("mercatto_estoque")
-        .select("id, produto, unidade, local_saida, preco")
-        .eq("empresa", EMPRESA)
-        .eq("ativo", true)
-        .order("produto", { ascending: true });
+  if(!data || data.length === 0){
 
-      if (error) {
-        console.error(error);
-
-        corpoTabela.innerHTML = `
-          <tr>
-            <td colspan="4" class="status">
-              Erro ao carregar os produtos.
-            </td>
-          </tr>
-        `;
-
-        contador.textContent = "Erro ao carregar";
-        exibirMensagem(error.message, "erro");
-        return;
-      }
-
-      produtos = data || [];
-      renderizarTabela(produtos);
+    return {
+      ok:false,
+      erro:"Senha não encontrada"
     }
 
-    async function salvarPreco(id) {
-      const input = document.getElementById(`preco-${id}`);
-      const botao = input.closest(".preco-box").querySelector(".btn-salvar");
+  }
 
-      try {
-        const preco = converterPreco(input.value);
+  if(data.length > 1){
 
-        botao.disabled = true;
-        botao.textContent = "Salvando...";
+    return {
+      ok:false,
+      erro:"Existe mais de um usuário com essa senha. Ajuste as senhas para não duplicar."
+    }
 
-        const { error } = await supabaseClient
-          .from("mercatto_estoque")
-          .update({
-            preco,
-            atualizado_em: new Date().toISOString()
-          })
-          .eq("id", id)
-          .eq("empresa", EMPRESA);
+  }
 
-        if (error) {
-          throw error;
+  return {
+    ok:true,
+    usuario:data[0]
+  }
+
+}
+
+async function confirmarSenhaSistema(){
+
+  const senhaDigitada =
+    senhaSistemaInput.value.trim()
+
+  if(!senhaDigitada){
+
+    senhaSistemaErro.innerHTML = "Digite a senha"
+    senhaSistemaErro.style.display = "block"
+    senhaSistemaInput.focus()
+
+    return
+
+  }
+
+  senhaSistemaBotao.disabled = true
+  senhaSistemaBotao.innerHTML = "VALIDANDO..."
+  senhaSistemaErro.style.display = "none"
+  senhaSistemaUsuario.style.display = "none"
+
+  const resultado =
+    await buscarUsuarioPelaSenha(senhaDigitada)
+
+  if(!resultado.ok){
+
+    senhaSistemaBotao.disabled = false
+    senhaSistemaBotao.innerHTML =
+      modoSenhaSistema === "login"
+        ? "ENTRAR"
+        : "CONFIRMAR SENHA"
+
+    senhaSistemaErro.innerHTML = resultado.erro
+    senhaSistemaErro.style.display = "block"
+    senhaSistemaInput.value = ""
+    senhaSistemaInput.focus()
+
+    return
+
+  }
+
+  const user = resultado.usuario
+
+  senhaSistemaUsuario.innerHTML =
+    `Usuário encontrado: ${user.nome || user.usuario || "-"}`
+
+  senhaSistemaUsuario.style.display = "block"
+
+  setTimeout(()=>{
+
+    popupSenhaSistema.style.display = "none"
+
+    if(modoSenhaSistema === "login"){
+
+      dadosUsuario = user
+
+      localStorage.setItem(
+        "user_data",
+        JSON.stringify(user)
+      )
+
+      init()
+
+      return
+
+    }
+
+    if(resolverSenhaSistema){
+
+      resolverSenhaSistema(user)
+      resolverSenhaSistema = null
+
+    }
+
+  }, 250)
+
+}
+
+function solicitarUsuarioPorSenha(config = {}){
+
+  return new Promise(resolve=>{
+
+    resolverSenhaSistema = resolve
+
+    abrirPopupSenhaBase({
+      modo:"acao",
+      icone:config.icone || "✍️",
+      titulo:config.titulo || "Confirmar recebimento",
+      subtitulo:config.subtitulo || "Digite somente a senha de quem recebeu. O sistema identifica o usuário automaticamente.",
+      botao:config.botao || "CONFIRMAR ASSINATURA"
+    })
+
+  })
+
+}
+
+async function login(){
+
+  abrirPopupSenhaLogin()
+
+}
+
+async function validarSessao(){
+
+  const saved =
+    localStorage.getItem(
+      "user_data"
+    )
+
+  if(!saved)
+    return false
+
+  const user = JSON.parse(saved)
+
+  const { data } = await sb
+
+    .from("usuarios_do_sistema")
+
+    .select("*")
+
+    .eq("id", user.id)
+
+    .maybeSingle()
+
+  if(!data){
+
+    logout()
+
+    return false
+
+  }
+
+  dadosUsuario = data
+
+  return true
+
+}
+
+async function init(){
+
+  loginArea.classList.add(
+    "hidden"
+  )
+
+  appArea.classList.remove(
+    "hidden"
+  )
+
+  if(!dadosUsuario){
+
+    const saved = JSON.parse(
+
+      localStorage.getItem(
+        "user_data"
+      )
+
+    )
+
+    dadosUsuario = saved
+
+  }
+
+  solicitante.value =
+    dadosUsuario.nome || ""
+
+  setor.value =
+    dadosUsuario.setor || ""
+
+await carregarHistorico()
+
+await carregarPedidosAcougue()
+
+await verificarAvisos()
+
+}
+
+
+
+  
+window.addEventListener(
+
+  "DOMContentLoaded",
+
+  async ()=>{
+
+    const ok =
+      await validarSessao()
+
+    if(ok){
+      init()
+    }
+    else{
+      setTimeout(()=>{
+        abrirPopupSenhaLogin()
+      }, 350)
+    }
+
+  }
+
+)
+
+function logout(){
+
+  localStorage.removeItem(
+    "user_data"
+  )
+
+  location.reload()
+
+}
+
+
+
+
+
+
+
+
+
+
+function normalizarTexto(txt){
+
+  return String(txt || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+
+}
+
+
+function calcularSimilaridade(busca, produto){
+
+  const b =
+    normalizarTexto(busca)
+
+  const p =
+    normalizarTexto(produto)
+
+  if(!b || !p)
+    return 0
+
+  if(p === b)
+    return 100
+
+  if(p.includes(b))
+    return 90
+
+  const palavrasBusca =
+    b.split(" ")
+    .filter(Boolean)
+
+  const palavrasProduto =
+    p.split(" ")
+    .filter(Boolean)
+
+  let pontos = 0
+
+  palavrasBusca.forEach(pb=>{
+
+    if(
+      palavrasProduto.some(pp => pp === pb)
+    ){
+      pontos += 25
+    }
+
+    else if(
+      palavrasProduto.some(pp => pp.includes(pb))
+    ){
+      pontos += 18
+    }
+
+    else if(
+      palavrasProduto.some(pp => pb.includes(pp))
+    ){
+      pontos += 12
+    }
+
+  })
+
+  return pontos
+
+}
+
+
+function renderizarProdutoLista(p, textoExtra = "") {
+
+  const temEstoque =
+    Number(p.saldo || 0) > 0
+
+  return `
+
+    <div
+      class="item"
+      onclick="selectProduto('${p.id}')"
+    >
+
+      <div class="item-top">
+
+        <div class="nome">
+          ${p.produto}
+        </div>
+
+        <div class="badge ${temEstoque ? "ok" : "off"}">
+
+          ${temEstoque ? "DISPONÍVEL" : "EM ANÁLISE"}
+
+        </div>
+
+      </div>
+
+      <div class="info">
+
+        Unidade:
+        ${p.unidade || "UN"}
+
+        ${
+          p.local_saida
+            ? ` • ${p.local_saida}`
+            : ``
         }
 
-        const produto = produtos.find(item => item.id === id);
-
-        if (produto) {
-          produto.preco = preco;
+        ${
+          textoExtra
+            ? `<br>${textoExtra}`
+            : ``
         }
 
-        input.value = formatarPrecoParaInput(preco);
-        exibirMensagem("Preço atualizado com sucesso.", "sucesso");
-      } catch (erro) {
-        console.error(erro);
-        exibirMensagem(erro.message || "Erro ao salvar o preço.", "erro");
-      } finally {
-        botao.disabled = false;
-        botao.textContent = "Salvar";
-      }
+      </div>
+
+    </div>
+
+  `
+
+}
+
+function renderizarCadastrarManual(){
+
+  listaProdutos.innerHTML += `
+
+    <div
+      class="item"
+      onclick="abrirNovoProduto()"
+
+      style="
+        background:#eff6ff;
+        border-top:1px solid #dbeafe;
+      "
+    >
+
+      <div class="nome">
+        ➕ Produto não encontrado
+      </div>
+
+      <div class="info">
+        Clique para cadastrar manualmente
+      </div>
+
+    </div>
+
+  `
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+let tempoBuscaProduto = null
+
+produto.onkeyup = ()=>{
+
+  clearTimeout(tempoBuscaProduto)
+
+  tempoBuscaProduto = setTimeout(()=>{
+
+    buscarProdutosInteligente()
+
+  }, 250)
+
+}
+
+
+async function buscarProdutosInteligente(){
+
+  const q =
+    produto.value.trim()
+
+  produtoSelecionado = null
+
+  produtoManual = null
+
+  observacaoBloqueada = ""
+
+  if(q.length < 1){
+
+    listaProdutos.innerHTML = ""
+
+    return
+
+  }
+
+  listaProdutos.innerHTML = `
+
+    <div class="item">
+
+      <div class="nome">
+        Buscando...
+      </div>
+
+      <div class="info">
+        Procurando produtos parecidos
+      </div>
+
+    </div>
+
+  `
+
+  const termoNormalizado =
+    normalizarTexto(q)
+
+  const primeiraPalavra =
+    termoNormalizado
+    .split(" ")[0] || q
+
+  const setorLogadoNormalizado =
+  normalizarTexto(
+    dadosUsuario?.setor || ""
+  )
+
+const esconderEstoqueAcougue =
+  setorLogadoNormalizado.includes("acougue")
+
+
+
+  
+  /*
+    1ª tentativa:
+    busca normal no banco, rápida.
+  */
+ let queryBuscaDireta = sb
+
+  .from("mercatto_estoque")
+
+  .select(`
+    id,
+    produto,
+    saldo,
+    unidade,
+    local_saida
+  `)
+
+  .ilike(
+    "produto",
+    `%${q}%`
+  )
+
+  .eq("ativo", true)
+  .eq("empresa", "DELICIA GOURMET")
+if(esconderEstoqueAcougue){
+
+  queryBuscaDireta = queryBuscaDireta.neq(
+    "local_saida",
+    "ESTOQUE AÇOUGUE"
+  )
+
+}
+
+const { data: buscaDireta, error: erroDireto } =
+  await queryBuscaDireta
+    .order("produto")
+    .limit(20)
+
+
+  
+  if(erroDireto){
+
+    console.log(erroDireto)
+
+    listaProdutos.innerHTML = ""
+
+    renderizarCadastrarManual()
+
+    return
+
+  }
+
+  let resultados =
+    buscaDireta || []
+
+  /*
+    2ª tentativa:
+    se não achou por causa de acento ou escrita diferente,
+    busca uma lista maior e compara no navegador sem acento.
+  */
+  if(resultados.length === 0){
+
+ let queryListaMaior = sb
+
+  .from("mercatto_estoque")
+
+  .select(`
+    id,
+    produto,
+    saldo,
+    unidade,
+    local_saida
+  `)
+
+  .eq("ativo", true)
+  .eq("empresa", "DELICIA GOURMET")
+
+  .ilike(
+    "produto",
+    `%${primeiraPalavra.slice(0,3)}%`
+  )
+
+if(esconderEstoqueAcougue){
+
+  queryListaMaior = queryListaMaior.neq(
+    "local_saida",
+    "ESTOQUE AÇOUGUE"
+  )
+
+}
+
+const { data: listaMaior, error: erroLista } =
+  await queryListaMaior
+    .order("produto")
+    .limit(80)
+
+
+    
+    if(erroLista){
+
+      console.log(erroLista)
+
+      listaProdutos.innerHTML = ""
+
+      renderizarCadastrarManual()
+
+      return
+
     }
 
-    pesquisa.addEventListener("input", () => {
-      const termo = normalizarTexto(pesquisa.value);
+    resultados =
+      (listaMaior || [])
+      .map(p=>({
 
-      const filtrados = produtos.filter(produto =>
-        normalizarTexto(produto.produto).includes(termo)
-      );
+        ...p,
 
-      renderizarTabela(filtrados);
-    });
+        score:
+          calcularSimilaridade(q, p.produto)
 
-    window.salvarPreco = salvarPreco;
+      }))
+      .filter(p => p.score >= 12)
+      .sort((a,b)=> b.score - a.score)
+      .slice(0,10)
 
-    carregarProdutos();
+  }
+
+  /*
+    3ª tentativa:
+    se ainda não achou, pega produtos gerais e mostra sugestão parecida.
+  */
+  if(resultados.length === 0){
+
+   let querySugestoes = sb
+
+  .from("mercatto_estoque")
+
+  .select(`
+    id,
+    produto,
+    saldo,
+    unidade,
+    local_saida
+  `)
+
+   .eq("ativo", true)
+  .eq("empresa", "DELICIA GOURMET")
+
+if(esconderEstoqueAcougue){
+
+  querySugestoes = querySugestoes.neq(
+    "local_saida",
+    "ESTOQUE AÇOUGUE"
+  )
+
+}
+
+const { data: sugestoes, error: erroSugestao } =
+  await querySugestoes
+    .order("produto")
+    .limit(120)
+
+    if(erroSugestao){
+
+      console.log(erroSugestao)
+
+      listaProdutos.innerHTML = ""
+
+      renderizarCadastrarManual()
+
+      return
+
+    }
+
+    resultados =
+      (sugestoes || [])
+      .map(p=>({
+
+        ...p,
+
+        score:
+          calcularSimilaridade(q, p.produto)
+
+      }))
+      .filter(p => p.score >= 10)
+      .sort((a,b)=> b.score - a.score)
+      .slice(0,8)
+
+  }
+
+  listaProdutos.innerHTML = ""
+
+  if(resultados.length > 0){
+
+    const encontrouExato =
+      resultados.some(p =>
+        normalizarTexto(p.produto) === termoNormalizado ||
+        normalizarTexto(p.produto).includes(termoNormalizado)
+      )
+
+    if(!encontrouExato){
+
+      listaProdutos.innerHTML += `
+
+        <div
+          class="item"
+          style="
+            background:#fffbeb;
+            border-bottom:1px solid #fde68a;
+          "
+        >
+
+          <div class="nome">
+            Sugestões encontradas
+          </div>
+
+          <div class="info">
+            Não achei exatamente "${q}", mas encontrei produtos parecidos.
+          </div>
+
+        </div>
+
+      `
+
+    }
+
+    resultados.forEach(p=>{
+
+      const similaridade =
+        calcularSimilaridade(q, p.produto)
+
+      const textoExtra =
+        similaridade < 90
+          ? "Sugestão parecida"
+          : ""
+
+      listaProdutos.innerHTML +=
+        renderizarProdutoLista(
+          p,
+          textoExtra
+        )
+
+    })
+
+  }
+
+  else{
+
+    listaProdutos.innerHTML += `
+
+      <div
+        class="item"
+        style="
+          background:#fef2f2;
+          border-bottom:1px solid #fecaca;
+        "
+      >
+
+        <div class="nome">
+          Nenhum produto parecido encontrado
+        </div>
+
+        <div class="info">
+          Você pode cadastrar esse produto manualmente.
+        </div>
+
+      </div>
+
+    `
+
+  }
+
+  renderizarCadastrarManual()
+
+}
+
+async function selectProduto(id){
+
+const { data } = await sb
+
+  .from("mercatto_estoque")
+
+  .select("*")
+
+  .eq("id", id)
+
+  .eq("empresa", "DELICIA GOURMET")
+
+  .maybeSingle()
+
+  if(!data)
+    return
+
+  produtoSelecionado = data
+
+  const unidadeProduto =
+    (data.unidade || "UN")
+    .toUpperCase()
+
+  produto.value =
+    `${data.produto} (${unidadeProduto})`
+
+  listaProdutos.innerHTML = ""
+
+  // AUTOMÁTICO
+
+  if(
+    unidadeProduto === "KG"
+  ){
+
+    quantidade.step = "0.001"
+
+    quantidade.placeholder =
+      "Ex: 0.500"
+
+    labelQuantidade.innerHTML =
+      "Quantidade (KG)"
+
+  }
+
+  else{
+
+    quantidade.step = "1"
+
+    quantidade.placeholder =
+      "Ex: 2"
+
+    labelQuantidade.innerHTML =
+      `Quantidade (${unidadeProduto})`
+
+  }
+
+}
+
+
+
+
+quantidade.addEventListener("input", ()=>{
+
+  if(!produtoSelecionado)
+    return
+
+  const unidade =
+    (
+      produtoSelecionado.unidade || "UN"
+    ).toUpperCase()
+
+  let valor =
+    quantidade.value
+
+  // KG → permite números e vírgula
+  if(unidade === "KG"){
+
+    valor = valor
+
+      .replace(/[^\d,]/g,"")
+
+      // apenas 1 vírgula
+      .replace(/(,.*?),/g,"$1")
+
+    quantidade.value = valor
+
+  }
+
+  // OUTROS → somente números
+  else{
+
+    valor = valor.replace(/\D/g,"")
+
+    quantidade.value = valor
+
+  }
+
+})
+
+
+
+function abrirNovoProduto(){
+
+  const nome =
+    produto.value.trim()
+
+  if(!nome)
+    return
+
+  novoProdutoNome.value = nome
+
+  document.getElementById(
+    "popupNovoProduto"
+  ).style.display = "flex"
+
+}
+
+function confirmarNovoProduto(){
+
+  const nome =
+    novoProdutoNome.value
+    .trim()
+    .toUpperCase()
+
+  const quantidadeManual =
+    novoProdutoQuantidade.value.trim()
+
+  const unidadeManual =
+    novoProdutoUnidade.value
+
+  const origemManual =
+    novoProdutoOrigem.value
+
+  if(
+    !nome ||
+    !quantidadeManual ||
+    !unidadeManual ||
+    !origemManual
+  ){
+
+    alert("Preencha todos os campos")
+
+    return
+
+  }
+
+  produtoManual = {
+
+    produto:
+      nome,
+
+    quantidade:
+      quantidadeManual,
+
+    unidade:
+      unidadeManual,
+
+    local_saida:
+      origemManual
+
+  }
+
+  produto.value =
+    `${nome} (${unidadeManual})`
+
+  quantidade.value =
+    quantidadeManual
+
+  labelQuantidade.innerHTML =
+    `Quantidade (${unidadeManual})`
+
+  const nomeOrigem =
+    origemManual === "ESTOQUE AÇOUGUE"
+      ? "Açougue"
+      : "Estoque de cima"
+
+  observacaoBloqueada =
+
+`🔒 Produto cadastrado por colaborador
+
+• Produto: ${nome}
+• Unidade: ${unidadeManual}
+• Quantidade solicitada: ${quantidadeManual}
+• Origem: ${nomeOrigem}
+
+────────────────────
+
+`
+
+  obs.value = observacaoBloqueada
+
+  document.getElementById(
+    "popupNovoProduto"
+  ).style.display = "none"
+
+}
+
+
+
+
+
+
+
+
+
+obs.addEventListener("keydown", (e)=>{
+
+  if(!produtoManual)
+    return
+
+  const inicio =
+    obs.selectionStart
+
+  // bloqueia editar área protegida
+  if(
+    inicio <
+    observacaoBloqueada.length
+  ){
+
+    // permite navegação
+    const permitidas = [
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowUp",
+      "ArrowDown",
+      "Tab"
+    ]
+
+    if(
+      !permitidas.includes(e.key)
+    ){
+
+      e.preventDefault()
+
+    }
+
+  }
+
+})
+
+obs.addEventListener("input", ()=>{
+
+  if(!produtoManual)
+    return
+
+  // garante bloco fixo
+  if(
+    !obs.value.startsWith(
+      observacaoBloqueada
+    )
+  ){
+
+    const parteUsuario =
+
+      obs.value.slice(
+        observacaoBloqueada.length
+      )
+
+    obs.value =
+
+      observacaoBloqueada +
+      parteUsuario
+
+  }
+
+})
+
+
+
+async function cadastrarProdutoNoEstoque(){
+
+  if(!produtoManual)
+    return null
+
+  const nomeProduto =
+    produtoManual.produto
+    .trim()
+    .toUpperCase()
+
+  const unidadeProduto =
+    produtoManual.unidade
+    .trim()
+    .toUpperCase()
+
+  const localSaidaProduto =
+    produtoManual.local_saida
+
+const { data: existente, error: erroBusca } = await sb
+
+  .from("mercatto_estoque")
+
+  .select("*")
+
+  .eq("produto", nomeProduto)
+
+  .eq("unidade", unidadeProduto)
+
+  .eq("local_saida", localSaidaProduto)
+
+  .eq("empresa", "DELICIA GOURMET")
+
+  .maybeSingle()
+
+  if(erroBusca){
+
+    console.log(erroBusca)
+
+    alert("Erro ao verificar produto no estoque")
+
+    return null
+
+  }
+
+  if(existente){
+
+    return existente
+
+  }
+
+  const { data: novoProduto, error: erroInsert } = await sb
+
+    .from("mercatto_estoque")
+
+    .insert({
+
+      produto:
+        nomeProduto,
+
+      unidade:
+        unidadeProduto,
+
+      quantidade:
+        0,
+
+      estoque_minimo:
+        0,
+
+      estoque_ideal:
+        0,
+
+      empresa:
+        "DELICIA GOURMET",
+
+      ativo:
+        true,
+
+      saldo:
+        0,
+
+      und_compra:
+        unidadeProduto,
+
+      qtd_unidades:
+        1,
+
+      local_saida:
+        localSaidaProduto,
+
+      obs_cadastro:
+        "CADASTRADO POR COLABORADOR"
+
+    })
+
+    .select("*")
+
+    .single()
+
+  if(erroInsert){
+
+    console.log(erroInsert)
+
+    alert("Erro ao cadastrar produto no estoque")
+
+    return null
+
+  }
+
+  return novoProduto
+
+}
+
+
+
+
+
+
+
+
+
+
+    
+async function enviar(){
+
+  const quantidadeFinal =
+
+    produtoManual
+
+    ? produtoManual.quantidade
+
+    : quantidade.value
+
+  if(
+    !quantidadeFinal
+  ){
+
+    alert("Preencha os campos")
+
+    return
+
+  }
+
+  if(
+    !produtoManual &&
+    !produtoSelecionado
+  ){
+
+    alert("Selecione ou cadastre um produto")
+
+    return
+
+  }
+
+  overlay.style.display = "flex"
+
+  let produtoParaRequisicao =
+    produtoSelecionado
+
+  if(produtoManual){
+
+    produtoParaRequisicao =
+      await cadastrarProdutoNoEstoque()
+
+    if(!produtoParaRequisicao){
+
+      overlay.style.display = "none"
+
+      return
+
+    }
+
+  }
+
+  const jsonCadastro =
+
+    produtoManual
+
+    ? JSON.stringify({
+
+        produto:
+          produtoParaRequisicao.produto,
+
+        unidade:
+          produtoParaRequisicao.unidade,
+
+        quantidade:
+          produtoManual.quantidade,
+
+        local_saida:
+          produtoParaRequisicao.local_saida,
+
+        origem:
+          produtoParaRequisicao.local_saida === "ESTOQUE AÇOUGUE"
+            ? "Açougue"
+            : "Estoque de cima",
+
+        obs_cadastro:
+          "CADASTRADO POR COLABORADOR",
+
+        solicitado_por:
+          dadosUsuario.nome,
+
+        setor:
+          dadosUsuario.setor
+
+      })
+
+    : null
+
+  const { error } = await sb
+  .from("mercatto_requisicoes")
+  .insert({
+
+    empresa:
+      "DELICIA GOURMET",
+
+    produto_id:
+      produtoParaRequisicao.id,
+
+    produto:
+      produtoParaRequisicao.produto,
+
+    quantidade:
+      parseFloat(
+        String(quantidadeFinal)
+        .replace(",",".")
+      ),
+
+    unidade:
+      produtoParaRequisicao.unidade,
+
+    local_saida:
+      produtoParaRequisicao.local_saida,
+
+    setor:
+      dadosUsuario.setor,
+
+    solicitante:
+      dadosUsuario.nome,
+
+    observacoes:
+      obs.value,
+
+    json_para_cadastro:
+      jsonCadastro,
+
+    status:
+      "PENDENTE"
+
+  })
+
+  overlay.style.display = "none"
+
+  if(error){
+
+    console.log(error)
+
+    alert("Erro ao salvar requisição")
+
+    return
+
+  }
+
+  mostrarSucesso()
+
+  limparCampos()
+
+  carregarHistorico()
+
+}
+
+async function carregarHistorico(){
+
+  const { data, error } = await sb
+
+.from("mercatto_requisicoes")
+.select("*")
+.eq("empresa", "DELICIA GOURMET")
+.eq("solicitante", dadosUsuario.nome)
+
+    .order(
+      "created_at",
+      { ascending:false }
+    )
+
+    .limit(20)
+
+  if(error){
+
+    console.log(error)
+
+    return
+
+  }
+
+  tabela.innerHTML = ""
+
+  ;(data || []).forEach(r=>{
+
+    tabela.innerHTML += `
+
+      <tr>
+
+        <td>
+          ${r.produto}
+        </td>
+
+        <td>
+          ${r.quantidade}
+          ${r.unidade}
+        </td>
+
+<td>
+
+  <div
+    style="
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    "
+  >
+
+    <span
+      style="
+        font-weight:800;
+        color:
+          ${r.status === 'ENTREGUE'
+            ? '#16a34a'
+            : '#ca8a04'};
+      "
+    >
+      ${r.status}
+    </span>
+
+    <span
+      style="
+        font-size:11px;
+        color:#64748b;
+        font-weight:600;
+      "
+    >
+
+${
+  r.created_at
+    ? formatarDataHoraBR(r.created_at).replace(",", " -")
+    : "-"
+}
+
+    </span>
+
+  </div>
+
+</td>
+
+      </tr>
+
+    `
+
+  })
+
+}
+
+
+
+
+
+function unidadeEhKg(unidade){
+
+  return String(unidade || "")
+    .trim()
+    .toUpperCase() === "KG"
+
+}
+
+function formatarQuantidadeParaEdicao(valor, unidade){
+
+  if(valor === null || valor === undefined || valor === "")
+    return ""
+
+  const numero = Number(valor)
+
+  if(isNaN(numero))
+    return ""
+
+  if(unidadeEhKg(unidade)){
+
+    return numero
+      .toFixed(3)
+      .replace(".", ",")
+
+  }
+
+  return String(
+    Math.trunc(numero)
+  )
+
+}
+
+function aplicarMascaraQuantidadeEdicao(input, unidade){
+
+  const ehKg = unidadeEhKg(unidade)
+
+  let valor = String(input.value || "")
+
+  if(ehKg){
+
+    valor = valor
+      .replace(/[^\d,\.]/g, "")
+      .replace(/\./g, ",")
+      .replace(/(,.*?),/g, "$1")
+
+    const partes = valor.split(",")
+
+    if(partes.length > 1){
+
+      partes[1] = partes[1].slice(0, 3)
+
+      valor = partes[0] + "," + partes[1]
+
+    }
+
+    input.value = valor
+
+    return
+
+  }
+
+  valor = valor.replace(/\D/g, "")
+
+  input.value = valor
+
+}
+
+function quantidadeEditadaParaNumero(valor, unidade){
+
+  let texto = String(valor || "").trim()
+
+  if(!texto)
+    return null
+
+  if(unidadeEhKg(unidade)){
+
+    texto = texto.replace(",", ".")
+
+    const numero = parseFloat(texto)
+
+    if(isNaN(numero))
+      return null
+
+    return Number(numero.toFixed(3))
+
+  }
+
+  texto = texto.replace(/\D/g, "")
+
+  if(!texto)
+    return null
+
+  return parseInt(texto, 10)
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+async function carregarPedidosAcougue(){
+
+  const setorUsuario =
+    String(
+      dadosUsuario?.setor || ""
+    ).toLowerCase()
+
+  if(
+    !setorUsuario.includes("acougue")
+  ){
+
+    painelAcougue.classList.add(
+      "hidden"
+    )
+
+    return
+
+  }
+
+  painelAcougue.classList.remove(
+    "hidden"
+  )
+
+  listaPedidosAcougue.innerHTML = `
+
+    <div
+      style="
+        background:#fff;
+        border:1px solid #e2e8f0;
+        border-radius:18px;
+        padding:18px;
+        text-align:center;
+        font-size:13px;
+        font-weight:800;
+        color:#64748b;
+      "
+    >
+      Carregando pedidos pendentes...
+    </div>
+
+  `
+
+  const { data, error } = await sb
+
+    .from("mercatto_requisicoes")
+
+    .select(`
+      id,
+      produto_id,
+      produto,
+      quantidade,
+      unidade,
+      setor,
+      solicitante,
+      status,
+      local_saida,
+      created_at
+    `)
+
+    .eq(
+      "local_saida",
+      "ESTOQUE AÇOUGUE"
+    )
+
+    .eq(
+      "status",
+      "PENDENTE"
+    )
+
+    .order(
+      "setor",
+      { ascending:true }
+    )
+
+    .order(
+      "created_at",
+      { ascending:true }
+    )
+
+  if(error){
+
+    console.log(error)
+
+    listaPedidosAcougue.innerHTML = `
+
+      <div
+        style="
+          background:#fff;
+          border:1px solid #fecaca;
+          border-radius:18px;
+          padding:18px;
+          text-align:center;
+          font-size:13px;
+          font-weight:900;
+          color:#991b1b;
+        "
+      >
+        Erro ao carregar pedidos pendentes.
+      </div>
+
+    `
+
+    return
+
+  }
+
+  if(!data || data.length === 0){
+
+    listaPedidosAcougue.innerHTML = `
+
+      <div
+        style="
+          background:#fff;
+          border:1px solid #e2e8f0;
+          border-radius:18px;
+          padding:18px;
+          text-align:center;
+          font-size:13px;
+          font-weight:800;
+          color:#64748b;
+        "
+      >
+        Nenhum pedido pendente no estoque açougue.
+      </div>
+
+    `
+
+    return
+
+  }
+
+  const gruposPorSetor = {}
+
+  ;(data || []).forEach(item=>{
+
+    const setor =
+      nomeSetorPedido(item.setor)
+
+    if(!gruposPorSetor[setor]){
+
+      gruposPorSetor[setor] = []
+
+    }
+
+    gruposPorSetor[setor].push(item)
+
+  })
+
+  const setoresOrdenados =
+    Object.keys(gruposPorSetor)
+      .sort((a,b)=> a.localeCompare(b, "pt-BR"))
+
+  listaPedidosAcougue.innerHTML =
+    setoresOrdenados
+      .map(setor =>
+        renderizarGrupoSetorSimples(
+          setor,
+          gruposPorSetor[setor]
+        )
+      )
+      .join("")
+
+}
+
+
+function limparHtml(valor){
+
+  return String(valor || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;")
+
+}
+
+
+function nomeSetorPedido(setor){
+
+  const s = String(setor || "")
+    .trim()
+    .toUpperCase()
+
+  if(!s)
+    return "SEM SETOR"
+
+  return s
+
+}
+
+
+function corDoSetor(nome){
+
+  const cores = [
+    "#2563eb",
+    "#7c3aed",
+    "#0891b2",
+    "#0f766e",
+    "#ea580c",
+    "#475569"
+  ]
+
+  let soma = 0
+
+  String(nome || "").split("").forEach(letra=>{
+    soma += letra.charCodeAt(0)
+  })
+
+  return cores[soma % cores.length]
+
+}
+
+
+function renderizarPedidoAcougueSimples(item){
+
+  const unidade =
+    limparHtml(
+      item.unidade || "UN"
+    )
+
+  return `
+
+    <div class="pedido-acougue-card">
+
+      <div class="pedido-linha-principal">
+
+        <div class="pedido-produto-nome">
+          ${limparHtml(item.produto || "-")}
+        </div>
+
+        <input
+          class="pedido-qtd-input"
+          type="text"
+          inputmode="${
+            unidadeEhKg(item.unidade)
+              ? "decimal"
+              : "numeric"
+          }"
+          autocomplete="off"
+          value="${formatarQuantidadeParaEdicao(item.quantidade, item.unidade)}"
+          oninput="
+            aplicarMascaraQuantidadeEdicao(
+              this,
+              '${unidade}'
+            )
+          "
+          onchange="
+            alterarQuantidade(
+              '${item.id}',
+              this.value,
+              '${unidade}'
+            )
+          "
+        >
+
+        <div class="pedido-unidade">
+          ${unidade}
+        </div>
+
+      </div>
+
+      <div class="pedido-meta-simples">
+
+        <div>
+          👤 Pediu:
+          <strong>
+            ${limparHtml(item.solicitante || "-")}
+          </strong>
+        </div>
+
+        <div class="pedido-data-hora">
+          🕒
+          ${
+            item.created_at
+              ? formatarDataHoraBR(item.created_at).replace(",", " -")
+              : "-"
+          }
+        </div>
+
+      </div>
+
+      <div class="pedido-acoes-simples">
+
+        <button
+          class="btn-negar-pedido"
+          onclick="negarPedidoAcougue('${item.id}')"
+        >
+          NEGAR
+        </button>
+
+      </div>
+
+    </div>
+
+  `
+
+}
+
+
+function renderizarGrupoSetorSimples(nomeSetor, pedidos){
+
+  if(!pedidos || pedidos.length === 0)
+    return ""
+
+  const ids =
+    pedidos.map(p => p.id)
+
+  const cor =
+    corDoSetor(nomeSetor)
+
+  return `
+
+    <div
+      class="setor-grupo-card"
+      style="
+        background:
+          linear-gradient(135deg, ${cor}, ${cor}dd);
+        border: 1px solid ${cor};
+        box-shadow: 0 14px 34px ${cor}55;
+        color: #fff;
+      "
+    >
+
+      <div
+        class="setor-grupo-top"
+        style="
+          border-bottom: 1px solid rgba(255,255,255,.28);
+        "
+      >
+
+        <div>
+
+          <div
+            class="setor-grupo-nome"
+            style="
+              color:#fff;
+              text-shadow:0 1px 2px rgba(0,0,0,.22);
+            "
+          >
+            ${limparHtml(nomeSetor)}
+          </div>
+
+          <div
+            class="setor-grupo-contador"
+            style="
+              color:rgba(255,255,255,.88);
+            "
+          >
+            ${pedidos.length} item(ns) pendente(s)
+          </div>
+
+        </div>
+
+        <div
+          class="setor-badge"
+          style="
+            background:rgba(255,255,255,.18);
+            color:#fff;
+            border:1px solid rgba(255,255,255,.35);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+          "
+        >
+          SETOR
+        </div>
+
+      </div>
+
+      <div class="pedido-acougue-lista">
+
+        ${pedidos.map(item =>
+          renderizarPedidoAcougueSimples(item)
+        ).join("")}
+
+      </div>
+
+      <button
+        class="btn-setor-entrega"
+        style="
+          background:rgba(255,255,255,.18);
+          color:#fff;
+          border:1px solid rgba(255,255,255,.35);
+          box-shadow:0 10px 24px rgba(0,0,0,.18);
+        "
+        onclick='entregarPedidosPorSetor(${JSON.stringify(ids)}, "${limparHtml(nomeSetor)}")'
+      >
+        ENTREGAR SETOR ${limparHtml(nomeSetor)}
+      </button>
+
+    </div>
+
+  `
+
+}
+
+
+async function alterarProduto(
+  requisicaoId,
+  produtoId
+){
+
+  if(!produtoId)
+    return
+
+  const { data: produto } = await sb
+
+    .from("mercatto_estoque")
+
+    .select("*")
+
+    .eq("id", produtoId)
+
+    .eq(
+      "local_saida",
+      "ESTOQUE AÇOUGUE"
+    )
+
+    .maybeSingle()
+
+  if(!produto)
+    return
+
+  await sb
+
+    .from("mercatto_requisicoes")
+
+    .update({
+
+      produto_id:
+        produto.id,
+
+      produto:
+        produto.produto,
+
+      unidade:
+        produto.unidade
+
+    })
+
+    .eq("id", requisicaoId)
+
+  carregarPedidosAcougue()
+
+}
+
+
+
+async function alterarQuantidade(
+  requisicaoId,
+  quantidade,
+  unidade = "UN"
+){
+
+  const quantidadeFinal =
+    quantidadeEditadaParaNumero(
+      quantidade,
+      unidade
+    )
+
+  if(
+    quantidadeFinal === null ||
+    quantidadeFinal <= 0
+  ){
+
+    alert("Quantidade inválida")
+
+    await carregarPedidosAcougue()
+
+    return
+
+  }
+
+  const { error } = await sb
+
+    .from("mercatto_requisicoes")
+
+    .update({
+
+      quantidade:
+        quantidadeFinal
+
+    })
+
+    .eq("id", requisicaoId)
+
+    .eq(
+      "status",
+      "PENDENTE"
+    )
+
+  if(error){
+
+    console.log(error)
+
+    alert("Erro ao alterar quantidade")
+
+    await carregarPedidosAcougue()
+
+    return
+
+  }
+
+}
+
+
+
+async function negarPedidoAcougue(id){
+
+  const confirmar =
+    confirm(
+      "Deseja NEGAR este pedido? Ele sairá da lista de pendentes."
+    )
+
+  if(!confirmar)
+    return
+
+  const agora =
+    new Date().toISOString()
+
+  const { error } = await sb
+
+    .from("mercatto_requisicoes")
+
+    .update({
+
+      status:
+        "NEGADO",
+
+      conferente:
+        dadosUsuario?.nome || null,
+
+      data_conferencia:
+        agora,
+
+      recebido_em:
+        agora,
+
+      data_entrega:
+        agora
+
+    })
+
+    .eq("id", id)
+
+    .eq(
+      "local_saida",
+      "ESTOQUE AÇOUGUE"
+    )
+
+    .eq(
+      "status",
+      "PENDENTE"
+    )
+
+  if(error){
+
+    console.log(error)
+
+    alert("Erro ao negar pedido")
+
+    return
+
+  }
+
+  await carregarPedidosAcougue()
+
+  await carregarHistorico()
+
+}
+
+
+
+
+
+
+
+
+async function entregarPedido(id){
+
+  const user = await solicitarUsuarioPorSenha({
+    titulo:"Assinatura de recebimento",
+    subtitulo:"Digite somente a senha de quem recebeu este pedido.",
+    botao:"ASSINAR RECEBIMENTO"
+  })
+
+  if(!user)
+    return
+
+  await sb
+
+    .from("mercatto_requisicoes")
+
+    .update({
+
+      status:"ENTREGUE",
+
+      recebido_por:
+        user.nome,
+
+      recebedor:
+        user.nome,
+
+      conferente:
+        dadosUsuario.nome,
+
+      recebido_em:
+        new Date()
+        .toISOString(),
+
+      data_entrega:
+        new Date()
+        .toISOString(),
+
+      data_conferencia:
+        new Date()
+        .toISOString()
+
+    })
+
+    .eq("id", id)
+
+    .eq(
+      "status",
+      "PENDENTE"
+    )
+
+  alert("Pedido entregue")
+
+  carregarPedidosAcougue()
+
+  carregarHistorico()
+
+}
+
+
+
+
+function limparCampos(){
+
+  produto.value = ""
+
+  quantidade.value = ""
+
+  quantidade.placeholder =
+    "Digite a quantidade"
+
+  quantidade.step = "1"
+
+  labelQuantidade.innerHTML =
+    "Quantidade"
+
+  obs.value = ""
+
+  novoProdutoQuantidade.value = ""
+
+  novoProdutoUnidade.value = "UN"
+
+  novoProdutoOrigem.value = "ESTOQUE CENTRAL"
+
+  produtoManual = null
+
+  produtoSelecionado = null
+
+  observacaoBloqueada = ""
+
+}
+
+function formatarDataHoraBR(data){
+
+  if(!data)
+    return "-"
+
+  const d = new Date(data)
+
+  if(isNaN(d.getTime()))
+    return "-"
+
+  // ATRASA 3 HORAS SOMENTE NA EXIBIÇÃO DO HISTÓRICO
+  d.setHours(d.getHours() - 3)
+
+  return d.toLocaleString(
+    "pt-BR",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      year:"2-digit",
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  )
+
+}
+
+function classeStatus(status){
+
+  const s = String(status || "")
+    .toUpperCase()
+
+  if(s === "ENTREGUE" || s === "RECEBIDA" || s === "CONFERIDA")
+    return "statusEntregue"
+
+  if(s === "NEGADO" || s === "CANCELADO")
+    return "statusNegado"
+
+  return "statusPendente"
+
+}
+
+async function abrirHistorico24h(){
+
+  if(!dadosUsuario){
+
+    alert("Usuário não identificado")
+
+    return
+
+  }
+
+  const popup =
+    document.getElementById("popupHistorico24h")
+
+  const lista =
+    document.getElementById("historicoLista24h")
+
+  const sub =
+    document.getElementById("historicoSubtitulo")
+
+  popup.style.display = "flex"
+
+  sub.innerHTML =
+    `Últimas 24 horas • Setor: ${dadosUsuario.setor || "-"}`
+
+  lista.innerHTML = `
+
+    <div
+      style="
+        background:#fff;
+        border:1px solid #e2e8f0;
+        border-radius:18px;
+        padding:18px;
+        text-align:center;
+        font-size:13px;
+        font-weight:800;
+        color:#64748b;
+      "
+    >
+      Carregando produtos pedidos nas últimas 24 horas... 
+    </div>
+
+  `
+
+  const limite =
+    new Date(
+      Date.now() - 24 * 60 * 60 * 1000
+    ).toISOString()
+
+  const { data, error } = await sb
+
+    .from("mercatto_requisicoes")
+
+    .select("*")
+
+    .eq(
+      "setor",
+      dadosUsuario.setor
+    )
+
+    .gte(
+      "created_at",
+      limite
+    )
+
+    .order(
+      "created_at",
+      { ascending:false }
+    )
+
+  if(error){
+
+    console.log(error)
+
+    lista.innerHTML = `
+
+      <div
+        style="
+          background:#fff;
+          border:1px solid #fecaca;
+          border-radius:18px;
+          padding:18px;
+          text-align:center;
+          font-size:13px;
+          font-weight:800;
+          color:#991b1b;
+        "
+      >
+        Erro ao carregar histórico
+      </div>
+
+    `
+
+    return
+
+  }
+
+  if(!data || data.length === 0){
+
+    lista.innerHTML = `
+
+      <div
+        style="
+          background:#fff;
+          border:1px solid #e2e8f0;
+          border-radius:18px;
+          padding:18px;
+          text-align:center;
+          font-size:13px;
+          font-weight:800;
+          color:#64748b;
+        "
+      >
+        Nenhum produto pedido pelo seu setor nas últimas 24 horas
+      </div>
+
+    `
+
+    return
+
+  }
+
+  lista.innerHTML = ""
+
+  ;(data || []).forEach(item=>{
+
+    const status =
+      String(item.status || "PENDENTE")
+        .toUpperCase()
+
+    lista.innerHTML += `
+
+      <div class="historicoItem">
+
+        <div class="historicoItemTop">
+
+          <div style="flex:1;">
+
+            <div class="historicoProduto">
+              ${item.produto || "-"}
+            </div>
+
+            <div class="historicoMeta">
+
+              <div>
+                Quantidade:
+                ${item.quantidade || 0}
+                ${item.unidade || ""}
+              </div>
+
+              <div>
+                Setor:
+                ${item.setor || "-"}
+              </div>
+
+              <div>
+                Solicitante:
+                ${item.solicitante || "-"}
+              </div>
+
+              <div>
+                Origem:
+                ${item.local_saida || "-"}
+              </div>
+
+              <div>
+                Pedido em:
+                ${formatarDataHoraBR(item.created_at)}
+              </div>
+
+              ${item.recebedor || item.recebido_por ? `
+                <div>
+                  Recebido por:
+                  ${item.recebedor || item.recebido_por}
+                </div>
+              ` : ``}
+
+              ${item.recebido_em || item.data_entrega ? `
+                <div>
+                  Entregue em:
+                  ${formatarDataHoraBR(item.recebido_em || item.data_entrega)}
+                </div>
+              ` : ``}
+
+            </div>
+
+          </div>
+
+          <div class="statusBadge ${classeStatus(status)}">
+            ${status}
+          </div>
+
+        </div>
+
+      </div>
+
+    `
+
+  })
+
+}
+
+function fecharHistorico24h(){
+
+  const popup =
+    document.getElementById("popupHistorico24h")
+
+  if(popup){
+
+    popup.style.display = "none"
+
+  }
+
+}
+
+
+async function verificarAvisos(){
+
+  if(!dadosUsuario)
+    return
+
+  const { data, error } = await sb
+
+    .from("avisos_para_usuarios")
+
+    .select("*")
+
+    .eq("usuario_id", dadosUsuario.id)
+
+    .eq("ativo", true)
+
+    .order("created_at", {
+      ascending:false
+    })
+
+  if(error){
+
+    console.log(error)
+
+    return
+
+  }
+
+  if(!data || data.length === 0)
+    return
+
+  const aviso = data[0]
+
+  const popup =
+    document.getElementById("popupAviso")
+
+  const texto =
+    document.getElementById("textoAviso")
+
+  const tituloTopo =
+    document.querySelector("#popupAviso .popupTitulo")
+
+  const subtituloTopo =
+    document.querySelector("#popupAviso .popupSub")
+
+  if(tituloTopo){
+
+    tituloTopo.innerHTML =
+      aviso.titulo || "Aviso do Sistema"
+
+  }
+
+  if(subtituloTopo){
+
+    subtituloTopo.innerHTML =
+      ""
+
+  }
+
+  function limparHtml(valor){
+
+    return String(valor || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;")
+
+  }
+
+  const mensagemOriginal =
+    String(aviso.mensagem || "")
+      .replace(/\r/g, "")
+      .trim()
+
+  const partes =
+    mensagemOriginal
+      .split(/\n+/)
+      .map(linha => linha.trim())
+      .filter(Boolean)
+
+  if(partes.length === 0){
+
+    texto.innerHTML = `
+
+      <div class="avisoBox">
+
+        <div class="avisoDestaque">
+
+          <div class="avisoDestaqueIcon">
+            🔔
+          </div>
+
+          <div class="avisoDestaqueTexto">
+            Nenhuma mensagem informada.
+          </div>
+
+        </div>
+
+      </div>
+
+    `
+
+  }
+
+  else{
+
+    const primeiraLinha =
+      partes[0]
+
+    const linhas =
+      partes.slice(1)
+
+    texto.innerHTML = `
+
+      <div class="avisoBox">
+
+        <div class="avisoDestaque">
+
+          <div class="avisoDestaqueIcon">
+            🔔
+          </div>
+
+          <div class="avisoDestaqueTexto">
+            ${limparHtml(primeiraLinha)}
+          </div>
+
+        </div>
+
+        ${
+          linhas.map((linha, index)=>`
+
+            <div class="avisoLinha">
+
+              <div class="avisoMarcador">
+                ${index + 1}
+              </div>
+
+              <div class="avisoLinhaTexto">
+                ${limparHtml(linha)}
+              </div>
+
+            </div>
+
+          `).join("")
+        }
+
+      </div>
+
+    `
+
+  }
+
+  if(popup){
+
+    popup.style.display = "flex"
+
+  }
+
+}
+
+
+
+
+
+
+    
+
+function fecharAviso(){
+
+  const popup =
+    document.getElementById("popupAviso")
+
+  if(popup){
+
+    popup.style.display = "none"
+
+  }
+
+}
+
+
+
+function mostrarSucesso(){
+
+  const toast =
+    document.getElementById(
+      "toastSucesso"
+    )
+
+  const som =
+    document.getElementById(
+      "somSucesso"
+    )
+
+  if(som){
+
+    som.currentTime = 0
+
+    som.play().catch(()=>{})
+
+  }
+
+  toast.classList.add("show")
+
+  setTimeout(()=>{
+
+    toast.classList.remove(
+      "show"
+    )
+
+  }, 2200)
+
+}
+
+
+
+async function entregarPedidosPorSetor(ids, nomeSetor = ""){
+
+  if(!ids || ids.length === 0){
+
+    alert("Nenhum pedido encontrado para entregar")
+    return
+
+  }
+
+  const confirmar = confirm(
+    nomeSetor
+      ? `Deseja marcar como ENTREGUE somente os pedidos do setor ${nomeSetor}?`
+      : "Deseja marcar somente estes pedidos como ENTREGUE?"
+  )
+
+  if(!confirmar)
+    return
+
+  const user = await solicitarUsuarioPorSenha({
+    titulo:"Assinatura do setor",
+    subtitulo: nomeSetor
+      ? `Digite somente a senha de quem recebeu os pedidos do setor ${nomeSetor}.`
+      : "Digite somente a senha de quem recebeu estes pedidos.",
+    botao:"ASSINAR ENTREGA"
+  })
+
+  if(!user)
+    return
+
+  const agora = new Date().toISOString()
+
+  const nomeRecebedor =
+    user.nome ||
+    user.usuario ||
+    user.login ||
+    "Usuário"
+
+  const nomeConferente =
+    dadosUsuario?.nome ||
+    dadosUsuario?.usuario ||
+    dadosUsuario?.login ||
+    "Sistema"
+
+  const { data: atualizados, error } = await sb
+
+    .from("mercatto_requisicoes")
+
+    .update({
+
+      status:"ENTREGUE",
+
+      recebido_por:
+        nomeRecebedor,
+
+      recebedor:
+        nomeRecebedor,
+
+      conferente:
+        nomeConferente,
+
+      recebido_em:
+        agora,
+
+      data_entrega:
+        agora,
+
+      data_conferencia:
+        agora
+
+    })
+
+    .in("id", ids)
+
+    .eq(
+      "local_saida",
+      "ESTOQUE AÇOUGUE"
+    )
+
+    .eq(
+      "status",
+      "PENDENTE"
+    )
+
+    .select("id,status,produto,setor,local_saida,recebido_por")
+
+  if(error){
+
+    console.log(error)
+
+    alert("Erro ao entregar pedidos")
+
+    return
+
+  }
+
+  if(!atualizados || atualizados.length === 0){
+
+    alert(
+      "Nenhum pedido foi atualizado. Verifique se esses pedidos ainda estão como PENDENTE e se o local_saida é ESTOQUE AÇOUGUE."
+    )
+
+    await carregarPedidosAcougue()
+    await carregarHistorico()
+
+    return
+
+  }
+
+  alert(
+    nomeSetor
+      ? `${atualizados.length} pedido(s) do setor ${nomeSetor} foram entregues por ${nomeRecebedor}`
+      : `${atualizados.length} pedido(s) foram entregues por ${nomeRecebedor}`
+  )
+
+  await carregarPedidosAcougue()
+
+  await carregarHistorico()
+
+}
+
+async function entregarTodosPedidos(){
+
+  const confirmar = confirm(
+    "Deseja marcar todos os pedidos pendentes do açougue como ENTREGUE?"
+  )
+
+  if(!confirmar)
+    return
+
+  const user = await solicitarUsuarioPorSenha({
+    titulo:"Assinatura geral",
+    subtitulo:"Digite somente a senha de quem recebeu todos os pedidos pendentes do açougue.",
+    botao:"ASSINAR ENTREGA"
+  })
+
+  if(!user)
+    return
+
+  const agora = new Date().toISOString()
+
+  const nomeRecebedor =
+    user.nome ||
+    user.usuario ||
+    user.login ||
+    "Usuário"
+
+  const nomeConferente =
+    dadosUsuario?.nome ||
+    dadosUsuario?.usuario ||
+    dadosUsuario?.login ||
+    "Sistema"
+
+  const { data: atualizados, error } = await sb
+
+    .from("mercatto_requisicoes")
+
+    .update({
+
+      status:"ENTREGUE",
+
+      recebido_por:
+        nomeRecebedor,
+
+      recebedor:
+        nomeRecebedor,
+
+      conferente:
+        nomeConferente,
+
+      recebido_em:
+        agora,
+
+      data_entrega:
+        agora,
+
+      data_conferencia:
+        agora
+
+    })
+
+    .eq(
+      "local_saida",
+      "ESTOQUE AÇOUGUE"
+    )
+
+    .eq(
+      "status",
+      "PENDENTE"
+    )
+
+    .select("id,status,produto,setor,local_saida,recebido_por")
+
+  if(error){
+
+    console.log(error)
+
+    alert("Erro ao entregar pedidos")
+
+    return
+
+  }
+
+  if(!atualizados || atualizados.length === 0){
+
+    alert(
+      "Nenhum pedido foi atualizado. Não existe pedido PENDENTE com local_saida ESTOQUE AÇOUGUE."
+    )
+
+    await carregarPedidosAcougue()
+    await carregarHistorico()
+
+    return
+
+  }
+
+  alert(
+    `${atualizados.length} pedido(s) do açougue foram entregues por ${nomeRecebedor}`
+  )
+
+  await carregarPedidosAcougue()
+
+  await carregarHistorico()
+
+}
+
+
+
+
+
+
+
+
+
+
+
+  
   </script>
+  <div id="toastSucesso" class="toastSucesso">
+
+    <div class="toastIcon">
+      ✓
+    </div>
+
+    <div>
+      Requisição enviada
+    </div>
+
+  </div>
+
+  <audio id="somSucesso" preload="auto">
+
+    <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+
+  </audio>
+  <script>
+    if("serviceWorker" in navigator){
+
+  window.addEventListener("load", ()=>{
+
+    navigator.serviceWorker.register(
+      "./service-worker.js"
+    )
+
+  })
+
+}
+
+  </script>
+
+
+
+  <div id="popupNovoProduto" style="
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.72);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:999999;
+    padding:16px;
+  ">
+
+    <div style="
+      width:100%;
+      max-width:380px;
+      background:#fff;
+      border-radius:24px;
+      padding:20px;
+    ">
+
+      <h3 style="
+        font-size:18px;
+        font-weight:800;
+        margin-bottom:16px;
+      ">
+        Produto não cadastrado
+      </h3>
+
+      <label>Produto</label>
+
+      <input
+      id="novoProdutoNome"
+      readonly
+      class="readonly"
+    >
+
+      <label>Quantidade</label>
+
+      <input
+      id="novoProdutoQuantidade"
+      type="text"
+      inputmode="decimal"
+    >
+
+      <label>Unidade</label>
+
+      <select id="novoProdutoUnidade">
+
+  <option value="UN">
+    UN
+  </option>
+
+  <option value="KG">
+    KG
+  </option>
+
+  <option value="CX">
+    CX
+  </option>
+
+  <option value="LT">
+    LT
+  </option>
+
+  <option value="PC">
+    PC
+  </option>
+
+</select>
+
+
+      <label>De onde vem o produto?</label>
+
+      <select id="novoProdutoOrigem">
+
+  <option value="ESTOQUE CENTRAL">
+    Estoque de cima
+  </option>
+
+  <option value="ESTOQUE AÇOUGUE">
+    Açougue
+  </option>
+
+</select>
+
+      <button
+      class="btn btn-primary"
+      onclick="confirmarNovoProduto()"
+    >
+      ADICIONAR
+    </button>
+
+    </div>
+
+  </div>
+
+
+
 </body>
+
 </html>
